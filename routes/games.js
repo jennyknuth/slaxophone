@@ -13,8 +13,12 @@ router.get('/', function(req, res, next) {
   })
 });
 // this will be the route with object coming in from Slack, whether new or an update
+
+router.get('/update', function (req, res, next) {
+  res.render('games/test')
+})
 router.post('/update', function(req, res, next) { // want to have both new and update going to same route...bad idea?
-  
+
   console.log('games/update route', req.body)
   res.render('games/test', {req: req.body})
 
