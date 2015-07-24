@@ -1,0 +1,9 @@
+@import "reset";
+@import "colors"; // choose last, import at beginning
+@import "layout";
+@import "type";
+@import "colors"
+
+body {
+  background: red;
+}

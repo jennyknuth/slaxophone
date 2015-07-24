@@ -1,0 +1,11 @@
+<p>
+  This is meant to mimic what the 'next' user sees in the game
+</p>
+
+<form action="/games/update" method="post">
+  <label for="message">{{draw}}</label>
+  <input type="text" name="message" id="message" value="{{message}}">
+  <label for="next">received by {{next}}, going to…</label>
+  <input type="email" name="email" id="next">
+  <input type="submit" value="Send">
+</form>

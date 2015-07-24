@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/site');
-var users = require('./routes/games');
+var games = require('./routes/games');
 
 var app = express();
 
@@ -25,7 +25,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/games', users);
+app.use('/games', games);
+app.get('/styleguide', function (req, res, next) {
+  res.render('styleguide')
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
