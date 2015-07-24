@@ -18,10 +18,7 @@ router.get('/update', function (req, res, next) {
   res.render('games/test')
 })
 router.post('/update', function(req, res, next) { // want to have both new and update going to same route...bad idea?
-  var slackObject = req.body
-  console.log('games/update route', slackObject)
-  res.render('games/test', {req: slackObject})
-
+  games.insert(req.body)
   // if (!req.gameId) { // if new game
   //   req.body.message = [req.body.message]
   //   req.body.email = [req.body.email]
