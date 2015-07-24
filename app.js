@@ -6,6 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var unirest = require('unirest');
 
 var routes = require('./routes/site');
 var games = require('./routes/games');
@@ -23,6 +24,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+// .header('Accept', 'application/json')
+// .send({ "payload": { "channel": "#general", "username": "slaxophone", "text": "message goes here, really!" }})
+// .end(function (response) {
+//   console.log(response.body);
+// });
 
 app.use('/', routes);
 app.use('/games', games);
