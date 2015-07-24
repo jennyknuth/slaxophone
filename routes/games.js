@@ -8,7 +8,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   games.find({}, function(err, docs) {
     if (err) throw err
-    // console.log('docs', docs);
+    console.log('docs', docs);
     res.render('games/index', {docs: docs})
   })
 });
