@@ -25,25 +25,13 @@ router.post('/update', function(req, res, next) {
   console.log('req.body: ', req.body);
   // console.log('timestamp: ', req.body.timestamp);
   if (req.body.timestamp) { // if established game
-    games.findOne({}, function (err, doc) { //local version
-    // games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
+    // games.findOne({}, function (err, doc) { //local version
+    games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
       if (err) throw err
       console.log('game found', doc);
       console.log('doc.text found: ', doc.text)
       doc.text.push(req.body.text) // push message on to games.text
       console.log('doc.text pushed: ', doc.text)
-
-      // if (birthday.memory) {
-      //   birthdays.update({_id: url.params.id}, {"$push": { memory: birthday.memory}}, function (err, doc) {
-      //     if (err) res.end('could not update memories')
-      //   })
-      // }
-      // if (birthday.gifts) {
-      //   birthdays.update({_id: url.params.id}, {"$push": { gifts: birthday.gifts}}, function (err, doc) {
-      //     if (err) res.end('could not update gift ideas')
-      //   })
-      // }
-
       doc.user_name.push(req.body.user_name)
       doc.counter += 1
       // doc.prompt = doc.counter % 2 === 0 ? "Please illustrate this sentence: " : "Write a caption for this picture: ")
@@ -58,7 +46,7 @@ router.post('/update', function(req, res, next) {
     })
   } else { // if new game
     console.log('game not found, starting new game', req.body);
-    req.body.timestamp = new Date() // take this out for slack version
+    // req.body.timestamp = new Date() // take this out for slack version
     req.body.text = [req.body.text]
     req.body.user_name = [req.body.user_name]
     req.body.counter = 1
