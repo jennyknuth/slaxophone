@@ -21,6 +21,7 @@ router.get('/new', function (req, res, next) {
 //   res.render('games/test')
 // })
 
+// configuration for incoming webhook
 var configPayload = function (obj) {
   obj.user_name = obj.user_name.pop()
   obj.channel = '@knuth'//'@' + obj.user_name
@@ -35,12 +36,47 @@ var configPayload = function (obj) {
   return obj
 }
 
+// configuration for RTM API
+// var configPayload = function (obj) {
+//   obj = {
+//     "id": 1,
+//     "type": "message",
+//     "channel": "#general",
+//     "text": "Hello world"
+//   }
+  // obj.id = obj.timestamp
+  // obj.type = "message"
+  // // obj.user_name = obj.user_name.pop()
+  // // obj.channel = '@knuth'//'@' + obj.user_name
+  // obj.channel = 'U083ARY6L' // hardcoding my channel for now
+  // if (obj.counter % 2 === 0) {
+  //   obj.text = obj.write + obj.text.pop()
+  // } else {
+  //   obj.text = obj.draw + obj.text.pop()
+  // }
+  // // obj.username='slaxophone-bot'
+  // obj = JSON.stringify(obj)
+//   console.log('stringified JSON?: ', obj);
+//   return obj
+// }
+
+// 'https://slack.com/api/im.open?token=process.env.SLACK_TOKEN&user=U083ARY6L'
+// var getNewMessage = function () {
+//   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1')
+//         .end(function (response) {
+//           console.log(response.ims[0]);
+//           var slackIms = response.body.ims; // an array
+//           res.render('index', {docs: slackIms});
+//         })
+// }
+
 var sendPayload = function (JSONstring) {
   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+  // unirest.post('https://slack.com/api/im.open?token=' + process.env.SLACK_TOKEN + '&user=U083ARY6L')
   .header('Accept', 'application/json')
   .send(JSONstring)
   .end(function (response) {
-    console.log(response.body);
+    console.log('response body from unirest', response.body);
   });
 }
 
