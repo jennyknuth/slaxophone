@@ -6,7 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var unirest = require('unirest');
+
 
 var routes = require('./routes/site');
 var games = require('./routes/games');
