@@ -4,6 +4,7 @@
 
 <form action="/games/update" method="post">
   <input type="hidden" name="timestamp" value="{{timestamp}}">
+  <input type="hidden" name="counter" value="{{counter}}">
   <label for="message">{{draw}} "{{text}}"</label>
   <input type="text" name="text" id="message">
   <label for="user">received from {{user_name}}, going to…</label>

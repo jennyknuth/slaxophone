@@ -22,10 +22,9 @@ router.get('/new', function (req, res, next) {
 
 // this will be the route for slash command coming in from Slack, whether new or an update
 router.post('/update', function(req, res, next) {
-  console.log('req.body: ', req.body);
-  // console.log('timestamp: ', req.body.timestamp);
-  if (req.body.counter >= 1) { // if established game
-    // games.findOne({}, function (err, doc) { //local version
+  console.log('is timestamp in req.body? ', req.body);// timestamp, text, username, but no counter, etc.
+  console.log('counter ', req.body.counter);
+  if (req.body.timestamp) { // if established game
     games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
       if (err) throw err
       console.log('game found', doc);
@@ -47,6 +46,9 @@ router.post('/update', function(req, res, next) {
   } else { // if new game
     console.log('game not found, starting new game', req.body);
     // req.body.timestamp = new Date() // take this out for slack version
+    var timestamp = Math.floor(new Date() / 1000).toString()
+    console.log('timestamp', timestamp);
+    req.body.timestamp = timestamp
     req.body.text = [req.body.text]
     req.body.user_name = [req.body.user_name]
     req.body.counter = 1
