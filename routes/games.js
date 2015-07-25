@@ -23,11 +23,11 @@ router.get('/new', function (req, res, next) {
 
 var configPayload = function (obj) {
   obj.user_name = obj.user_name.pop()
-  obj.channel = '#general' //'@' + obj.user_name
+  obj.channel = '@knuth'//'@' + obj.user_name
   if (obj.counter % 2 === 0) {
-    obj.text = obj.draw + obj.text.pop()
-  } else {
     obj.text = obj.write + obj.text.pop()
+  } else {
+    obj.text = obj.draw + obj.text.pop()
   }
   obj.username='slaxophone-bot'
   obj = JSON.stringify(obj)
