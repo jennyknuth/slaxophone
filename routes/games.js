@@ -20,6 +20,15 @@ router.get('/new', function (req, res, next) {
 //   res.render('games/test')
 // })
 
+// var configPayload = function (obj) {
+//   var payload = obj
+//   payload.user_name = doc.user_name.pop()
+//   payload.channel_name = '@' + payload.user_name
+//   payload.text = doc.text.pop()
+//   console.log('payload', payload)
+//   return payload
+// }
+
 // this will be the route for slash command coming in from Slack, whether new or an update
 router.post('/update', function(req, res, next) {
   console.log('is timestamp in req.body? ', req.body);// timestamp, text, username, but no counter, etc.
@@ -66,7 +75,19 @@ router.post('/update', function(req, res, next) {
     req.body.write = 'Write a caption for this picture: '
 
     games.insert(req.body, function (err, doc) {
-      // console.log("new game in database with ts: ", doc)
+
+      var payload = doc
+      payload.user_name = doc.user_name.pop()
+      payload.channel_name = '@' + payload.user_name
+      payload.text = doc.text.pop()
+      console.log('payload', payload)
+      unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+      .header('Accept', 'application/json')
+      .send(payload)
+      .end(function (response) {
+        console.log(response.body);
+      });
+
       res.redirect('/games')
     })
   }
