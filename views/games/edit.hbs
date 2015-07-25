@@ -3,9 +3,14 @@
 </p>
 
 <form action="/games/update" method="post">
-  <label for="message">{{draw}}</label>
-  <input type="text" name="message" id="message" value="{{message}}">
-  <label for="next">received by {{next}}, going to…</label>
-  <input type="email" name="email" id="next">
+  <input type="hidden" name="timestamp" value="{{timestamp}}">
+  <label for="message">{{draw}} "{{text}}"</label>
+  <input type="text" name="text" id="message">
+  <label for="user">received from {{user_name}}, going to…</label>
+  <input type="text" name="user_name" id="user">
   <input type="submit" value="Send">
 </form>
+
+<p>
+  counter: {{counter}}
+</p>

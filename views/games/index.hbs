@@ -1,14 +1,14 @@
 <h1>Games</h1>
-
+<h2>Show properties of games object</h2>
 {{#each docs}}
-  show properties of games object
   <h2>id: {{_id}}</h2>
   <h2>team_id: {{team_id}}</h2>
   <h2>user_name: {{user_name}}</h2>
-  <a href="/games/{{_id}}"><h2>text: {{text}}</h2></a>
+  <h2>text: <a href="/games/{{_id}}">{{text}}</a></h2>
   <h2>channel_id: {{channel_id}}</h2>
   <h2>channel_name: {{channel_name}}</h2>
   <h2>next: {{next}} (how to do this?)</h2>
   <h2>counter: {{counter}}</h2>
-  <h2>gameId: {{gameId}}</h2>
+  <h2>gameId/timestamp: {{timestamp}}</h2>
+  <h2>prompt: {{prompt}}</h2>
 {{/each}}
