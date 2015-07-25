@@ -24,7 +24,7 @@ router.get('/new', function (req, res, next) {
 router.post('/update', function(req, res, next) {
   console.log('req.body: ', req.body);
   // console.log('timestamp: ', req.body.timestamp);
-  if (req.body.timestamp) { // if established game
+  if (req.body.counter >= 1) { // if established game
     // games.findOne({}, function (err, doc) { //local version
     games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
       if (err) throw err
@@ -54,7 +54,7 @@ router.post('/update', function(req, res, next) {
     req.body.write = 'Write a caption for this picture: '
 
     games.insert(req.body, function (err, doc) {
-      console.log("new game in database with ts: ", doc)
+      // console.log("new game in database with ts: ", doc)
       res.redirect('/games')
     })
   }
