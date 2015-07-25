@@ -28,18 +28,28 @@ router.post('/update', function(req, res, next) {
     games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
       if (err) throw err
       console.log('game found', doc);
-      console.log('doc.text found: ', doc.text)
       doc.text.push(req.body.text) // push message on to games.text
       console.log('doc.text pushed: ', doc.text)
       doc.user_name.push(req.body.user_name)
       doc.counter += 1
       // doc.prompt = doc.counter % 2 === 0 ? "Please illustrate this sentence: " : "Write a caption for this picture: ")
       // doc.next = req.next
-      // doc.gameId = req.gameId
       console.log('doc to go into database: ', doc);
       games.update({_id: doc._id}, doc, function (err, entry) {
         if (err) throw err
-        console.log('final doc from post req', entry); // send message to req.next
+        var payload = doc
+        payload.user_name = doc.user_name.pop()
+        payload.channel_name = '@' + payload.user_name
+        payload.text = doc.text.pop()
+        console.log('payload', payload)
+        unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+        .header('Accept', 'application/json')
+        .send(payload)
+        .end(function (response) {
+          console.log(response.body);
+        });
+
+        // console.log('final doc from post req', entry); // send message to req.next
         res.redirect('/games')
       })
     })
