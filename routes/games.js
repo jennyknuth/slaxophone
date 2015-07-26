@@ -1,10 +1,28 @@
 var db = require('monk')(process.env.MONGOLAB_URI);
 var games = db.get('games');
+var users = db.get('users');
 var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
 
-/* GET users listing. */
+var getUsers = function () {
+  unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1Y')
+  .end(function (response) {
+    var members = response.body.users; // an array
+    members.forEach( function (user) {
+      users.find({id: user.id}, function (err, doc) {
+        if (!doc) {
+          users.insert({id: user.id, name: user.name})
+        }
+      })
+    })
+  })
+}
+
+var removeUsers = function () {
+  users.remove({})
+}
+
 router.get('/', function(req, res, next) {
   games.find({}, function(err, docs) {
     if (err) throw err
@@ -25,14 +43,13 @@ router.get('/new', function (req, res, next) {
 var configPayload = function (obj) {
   obj.id = obj.timestamp
   obj.type = "message"
-  obj.user_name = obj.user_name.pop()
-  obj.channel = 'U0861KFLJ'//hardcoded jenny '@' + obj.user_name
+  obj.channel = '@' + obj.user_name.pop()
   if (obj.counter % 2 === 0) {
     obj.text = obj.write + obj.text.pop()
   } else {
     obj.text = obj.draw + obj.text.pop()
   }
-  obj.username='U085WTG3A' //slaxophone-bot
+  obj.username='Slaxophone-bot' //slaxophone-bot
   obj = JSON.stringify(obj)
   console.log('stringified JSON?: ', obj);
   return obj
