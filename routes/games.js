@@ -5,6 +5,12 @@ var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
 
+// use for a clean slate at any given time
+var removeUsers = function () {
+  users.remove({})
+}
+
+// use to add current users to the users collection
 var getUsers = function () {
   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1Y')
   .end(function (response) {
@@ -18,11 +24,6 @@ var getUsers = function () {
     })
   })
 }
-
-var removeUsers = function () {
-  users.remove({})
-}
-
 
 router.get('/', function(req, res, next) {
   games.find({}, function(err, docs) {
@@ -40,39 +41,39 @@ router.get('/new', function (req, res, next) {
 //   res.render('games/test')
 // })
 
-//configuration for slaxophone-bot
-var configPayload = function (obj) {
-  obj.id = obj.timestamp
-  obj.type = "message"
-  obj.user_name = obj.user_name.pop()
-  obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
-  if (obj.counter % 2 === 0) {
-    obj.text = obj.write + obj.text.pop()
-  } else {
-    obj.text = obj.draw + obj.text.pop()
-  }
-  obj.username='Slaxophone-bot' //slaxophone-bot
-  obj = JSON.stringify(obj)
-  console.log('stringified JSON?: ', obj);
-  return obj
-}
-
-// configuration for incoming webhook
+//configuration for slaxophone-bot: have not been able to get this to work
 // var configPayload = function (obj) {
+//   obj.id = obj.timestamp
+//   obj.type = "message"
 //   obj.user_name = obj.user_name.pop()
-//   obj.channel = '@knuth'//'@' + obj.user_name
+//   obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
 //   if (obj.counter % 2 === 0) {
 //     obj.text = obj.write + obj.text.pop()
 //   } else {
 //     obj.text = obj.draw + obj.text.pop()
 //   }
-//   obj.username='slaxophone-bot'
+//   obj.username='Slaxophone-bot' //slaxophone-bot
 //   obj = JSON.stringify(obj)
 //   console.log('stringified JSON?: ', obj);
 //   return obj
 // }
 
-// configuration for RTM API
+// make payload for incoming webhook: this works
+var configPayload = function (obj) {
+  obj.user_name = obj.user_name.pop()
+  obj.channel = '@knuth'//'@' + obj.user_name
+  if (obj.counter % 2 === 0) {
+    obj.text = obj.write + obj.text.pop()
+  } else {
+    obj.text = obj.draw + obj.text.pop()
+  }
+  obj.username='slaxophone-bot'
+  obj = JSON.stringify(obj)
+  console.log('stringified JSON?: ', obj);
+  return obj
+}
+
+// configuration for RTM API: don't know how to use this
 // var configPayload = function (obj) {
 //   obj = {
 //     "id": 1,
@@ -96,7 +97,6 @@ var configPayload = function (obj) {
 //   return obj
 // }
 
-// 'https://slack.com/api/im.open?token=process.env.SLACK_TOKEN&user=U083ARY6L'
 // var getNewMessage = function () {
 //   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1')
 //         .end(function (response) {
@@ -106,7 +106,7 @@ var configPayload = function (obj) {
 //         })
 // }
 
-//send via webhook
+//send via webhook: this works
 // var sendPayload = function (JSONstring) {
 //   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
 //   .header('Accept', 'application/json')
@@ -116,11 +116,21 @@ var configPayload = function (obj) {
 //   });
 // }
 
-//send via slaxophone-bot
+//send via slaxophone-bot: have not been able to get this to work
+// var sendPayload = function (JSONstring) {
+//   unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + process.env.SLACKBOT_KEY + '&channel=U083ARY6L')
+//   .header('Accept', 'application/json')
+//   .send(JSONstring)
+//   .end(function (response) {
+//     console.log('response body from unirest', response.body);
+//   });
+// }
+
+// send via slackbot: needs text only, no payload
 var sendPayload = function (JSONstring) {
   unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + process.env.SLACKBOT_KEY + '&channel=U083ARY6L')
   .header('Accept', 'application/json')
-  .send(JSONstring)
+  .send(JSONstring.text)
   .end(function (response) {
     console.log('response body from unirest', response.body);
   });
