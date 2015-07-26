@@ -41,36 +41,36 @@ router.get('/new', function (req, res, next) {
 // })
 
 //configuration for slaxophone-bot
-// var configPayload = function (obj) {
-//   obj.id = obj.timestamp
-//   obj.type = "message"
-//   obj.user_name = obj.user_name.pop()
-//   obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
-//   if (obj.counter % 2 === 0) {
-//     obj.text = obj.write + obj.text.pop()
-//   } else {
-//     obj.text = obj.draw + obj.text.pop()
-//   }
-//   obj.username='Slaxophone-bot' //slaxophone-bot
-//   obj = JSON.stringify(obj)
-//   console.log('stringified JSON?: ', obj);
-//   return obj
-// }
-
-// configuration for incoming webhook
 var configPayload = function (obj) {
+  obj.id = obj.timestamp
+  obj.type = "message"
   obj.user_name = obj.user_name.pop()
-  obj.channel = '@knuth'//'@' + obj.user_name
+  obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
   if (obj.counter % 2 === 0) {
     obj.text = obj.write + obj.text.pop()
   } else {
     obj.text = obj.draw + obj.text.pop()
   }
-  obj.username='slaxophone-bot'
+  obj.username='Slaxophone-bot' //slaxophone-bot
   obj = JSON.stringify(obj)
   console.log('stringified JSON?: ', obj);
   return obj
 }
+
+// configuration for incoming webhook
+// var configPayload = function (obj) {
+//   obj.user_name = obj.user_name.pop()
+//   obj.channel = '@knuth'//'@' + obj.user_name
+//   if (obj.counter % 2 === 0) {
+//     obj.text = obj.write + obj.text.pop()
+//   } else {
+//     obj.text = obj.draw + obj.text.pop()
+//   }
+//   obj.username='slaxophone-bot'
+//   obj = JSON.stringify(obj)
+//   console.log('stringified JSON?: ', obj);
+//   return obj
+// }
 
 // configuration for RTM API
 // var configPayload = function (obj) {
@@ -107,24 +107,24 @@ var configPayload = function (obj) {
 // }
 
 //send via webhook
-var sendPayload = function (JSONstring) {
-  unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
-  .header('Accept', 'application/json')
-  .send(JSONstring)
-  .end(function (response) {
-    console.log('response body from unirest', response.body);
-  });
-}
-
-//send via slaxophone-bot
 // var sendPayload = function (JSONstring) {
-//   unirest.post('https://slack.com/api/im.open?token=' + process.env.SLACK_TOKEN + '&user=U083ARY6L')
+//   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
 //   .header('Accept', 'application/json')
 //   .send(JSONstring)
 //   .end(function (response) {
 //     console.log('response body from unirest', response.body);
 //   });
 // }
+
+//send via slaxophone-bot
+var sendPayload = function (JSONstring) {
+  unirest.post('https://slack.com/api/im.open?token=' + process.env.SLACK_TOKEN + '&user=U083ARY6L')
+  .header('Accept', 'application/json')
+  .send(JSONstring)
+  .end(function (response) {
+    console.log('response body from unirest', response.body);
+  });
+}
 
 // this will be the route for slash command coming in from Slack, whether new or an update
 router.post('/update', function(req, res, next) {
