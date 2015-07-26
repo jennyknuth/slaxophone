@@ -130,7 +130,7 @@ var configPayload = function (obj) {
 var sendPayload = function (JSONstring) {
   unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + process.env.SLACKBOT_KEY + '&channel=U083ARY6L')
   .header('Accept', 'application/json')
-  .send({'text': JSONstring.text})
+  .send({text=JSONstring.text})
   .end(function (response) {
     console.log('response body from unirest', response.body);
   });
