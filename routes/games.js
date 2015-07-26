@@ -106,15 +106,15 @@ var configPayload = function (obj) {
 //         })
 // }
 
-//send via webhook: this works
-// var sendPayload = function (JSONstring) {
-//   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
-//   .header('Accept', 'application/json')
-//   .send(JSONstring)
-//   .end(function (response) {
-//     console.log('response body from unirest', response.body);
-//   });
-// }
+send via webhook: this works
+var sendPayload = function (JSONstring) {
+  unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+  .header('Accept', 'application/json')
+  .send(JSONstring)
+  .end(function (response) {
+    console.log('response body from unirest', response.body);
+  });
+}
 
 //send via slaxophone-bot: have not been able to get this to work
 // var sendPayload = function (JSONstring) {
@@ -126,15 +126,15 @@ var configPayload = function (obj) {
 //   });
 // }
 
-// send via slackbot: needs text only, no payload
-var sendPayload = function (JSONstring) {
-  unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + process.env.SLACKBOT_KEY + '&channel=U083ARY6L')
-  .header('Accept', 'application/json')
-  .send({"text": JSONstring[text]})
-  .end(function (response) {
-    console.log('response body from unirest', response.body);
-  });
-}
+// send via slackbot: needs text only, no payload, but couldn't get that to work either...
+// var sendPayload = function (JSONstring) {
+//   unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + process.env.SLACKBOT_KEY + '&channel=U083ARY6L')
+//   .header('Accept', 'application/json')
+//   .send(JSONstring)
+//   .end(function (response) {
+//     console.log('response body from unirest', response.body);
+//   });
+// }
 
 // this will be the route for slash command coming in from Slack, whether new or an update
 router.post('/update', function(req, res, next) {
