@@ -118,8 +118,8 @@ var configPayload = function (obj) {
 
 //send via slaxophone-bot
 var sendPayload = function (JSONstring) {
-  unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN +'&channel=U083ARY6L&text=' + JSONstring.text)
-  // unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + SLAXOPHONE_BOT_KEYS + '&channel=U083ARY6L')
+  // unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN +'&channel=U083ARY6L&text=' + JSONstring.text)
+  unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + SLAXOPHONE_BOT_KEYS + '&channel=U083ARY6L')
   .header('Accept', 'application/json')
   .send(JSONstring)
   .end(function (response) {
