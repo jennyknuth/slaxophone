@@ -106,7 +106,7 @@ var configPayload = function (obj) {
 //         })
 // }
 
-send via webhook: this works
+// send via webhook: this works
 var sendPayload = function (JSONstring) {
   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
   .header('Accept', 'application/json')
