@@ -100,7 +100,7 @@ var configPayload = function (obj) {
 
 //send via slaxophone-bot
 var sendPayload = function (JSONstring) {
-  unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+  unirest.post('https://hooks.slack.com/services/' + process.env.SLAXOPHONE_BOT_KEYS)
   // unirest.post('https://slack.com/api/im.open?token=' + process.env.SLACK_TOKEN + '&user=U083ARY6L')
   .header('Accept', 'application/json')
   .send(JSONstring)
