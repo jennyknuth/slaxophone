@@ -97,20 +97,22 @@ var Game = function (body) {
 // configuration for RTM API: this works
 var configPayload = function (obj) {
   console.log('object coming in to config', obj);
-  obj.id = 1 // hard coding for now, maybe make it equal to game _id later?
-  obj.type = "message"
-  obj.user_id = obj.user_id.pop()
+  var pObj = {}
+  pObj.id = 1 // hard coding for now, maybe make it equal to game _id later?
+  pObj.type = "message"
+  pObj.user_id = obj.user_id.pop()
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
-    obj.text = obj.write + obj.text.pop()
+    pObj.text = obj.write + obj.text.pop()
   } else {
-    obj.text = obj.draw + obj.text.pop()
+    pObj.text = obj.draw + obj.text.pop()
   }
-  // obj.username='slaxophone-bot'
-  obj = JSON.stringify(obj)
-  console.log('stringified JSON?: ', obj);
-  return obj
+  pObj.username='slaxophone-bot'
+  pObj.as_user='true'
+  pObj = JSON.stringify(pObj)
+  console.log('stringified JSON?: ', pObj);
+  return pObj
 }
 
 // var getNewMessage = function () {
