@@ -51,45 +51,54 @@ router.get('/new', function (req, res, next) {
 })
 
 //configuration for slaxophone-bot: have not been able to get this to work
-// var configPayload = function (obj) {
-//   obj.id = obj.timestamp
-//   obj.type = "message"
-//   obj.user_name = obj.user_name.pop()
-//   obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
-//   if (obj.counter % 2 === 0) {
-//     obj.text = obj.write + obj.text.pop()
-//   } else {
-//     obj.text = obj.draw + obj.text.pop()
-//   }
-//   obj.username='Slaxophone-bot' //slaxophone-bot
-//   obj = JSON.stringify(obj)
-//   console.log('stringified JSON?: ', obj);
-//   return obj
-// }
-
-// make payload for incoming webhook: this works
 var configPayload = function (obj) {
-  obj.user_name = obj.user_name.pop()
-  obj.channel = '@' + obj.user_name
-  if (obj.counter % 2 === 0) {
-    obj.text = obj.write + obj.text.pop()
-  } else {
-    obj.text = obj.draw + obj.text.pop()
+  obj = {
+    "id": 1,
+    "type": "message",
+    "channel": "D085X8MJR",
+    "text": "Hello world—does this come from slaxophone-bot?"
+    "username": "Slaxophone-bot"
   }
-  obj.username='slaxophone-bot'
+  // obj.id = obj.timestamp
+  // obj.type = "message"
+  // obj.user_name = obj.user_name.pop()
+  // obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
+  // if (obj.counter % 2 === 0) {
+  //   obj.text = obj.write + obj.text.pop()
+  // } else {
+  //   obj.text = obj.draw + obj.text.pop()
+  // }
+  // obj.username='Slaxophone-bot' //slaxophone-bot
   obj = JSON.stringify(obj)
   console.log('stringified JSON?: ', obj);
   return obj
 }
 
-// configuration for RTM API: don't know how to use this
+// make payload for incoming webhook: this works
 // var configPayload = function (obj) {
-//   obj = {
-//     "id": 1,
-//     "type": "message",
-//     "channel": "#general",
-//     "text": "Hello world"
+//   obj.user_name = obj.user_name.pop()
+//   obj.channel = '@' + obj.user_name
+//   if (obj.counter % 2 === 0) {
+//     obj.text = obj.write + obj.text.pop()
+//   } else {
+//     obj.text = obj.draw + obj.text.pop()
 //   }
+//   obj.username='slaxophone-bot'
+//   obj = JSON.stringify(obj)
+//   console.log('stringified JSON?: ', obj);
+//   return obj
+// }
+
+// configuration for RTM API: don't know how to use this
+var configPayload = function (obj) {
+  obj = {
+    "id": 1,
+    "type": "message",
+    "text": "here is the content of my message",
+    "username": "slaxophone-bot",
+    "as_user": "true",
+    "channel": "D0869FA3Y"
+  }
   // obj.id = obj.timestamp
   // obj.type = "message"
   // // obj.user_name = obj.user_name.pop()
@@ -103,8 +112,8 @@ var configPayload = function (obj) {
   // // obj.username='slaxophone-bot'
   // obj = JSON.stringify(obj)
 //   console.log('stringified JSON?: ', obj);
-//   return obj
-// }
+  return obj
+}
 
 // var getNewMessage = function () {
 //   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1')
@@ -115,15 +124,25 @@ var configPayload = function (obj) {
 //         })
 // }
 
-// send via webhook: this works
-var sendPayload = function (JSONstring) {
-  unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+// send via RTM API
+var sendPayload = function (JSONString) {
+  unirest.post('https://slack.com/api/chat.postMessage?token=' + SLAXOPHONE_BOT_TOKEN + '&channel=D0869FA3Y') // eventually the channel will be the thread ID
   .header('Accept', 'application/json')
-  .send(JSONstring)
-  .end(function (response) {
-    console.log('response body from unirest', response.body);
-  });
+    .send(JSONstring)
+    .end(function (response) {
+      console.log('response body from unirest', response.body);
+    });
 }
+
+// send via webhook: this works
+// var sendPayload = function (JSONstring) {
+//   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
+//   .header('Accept', 'application/json')
+//   .send(JSONstring)
+//   .end(function (response) {
+//     console.log('response body from unirest', response.body);
+//   });
+// }
 
 //send via slaxophone-bot: have not been able to get this to work
 // var sendPayload = function (JSONstring) {
@@ -147,31 +166,24 @@ var sendPayload = function (JSONstring) {
 
 // this will be the route for slash command coming in from Slack, whether new or an update
 router.post('/update', function(req, res, next) {
-  var counter = 0
   console.log('is timestamp in req.body? ', req.body);// timestamp, text, username, but no counter, etc.
   console.log('counter ', req.body.counter);
-  if (req.body.timestamp && counter < 9) { // if established game and less than 8 rounds
+  if (req.body.timestamp) { // if established game
     games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
       if (err) throw err
-      doc.text.push(req.body.text) // push message on to games.text
-      doc.user_name.push(req.body.user_name)
-      doc.counter += 1
-      games.update({_id: doc._id}, doc, function (err, entry) {
-        if (err) throw err
-        var payload = configPayload(doc)
-        console.log('payload', payload)
-        sendPayload(payload)
-        console.log('payload sent with unirest')
-        res.redirect('/games')
-      })
-    })
-  } else if (counter >= 9) {
-    games.findOne({timestamp: req.body.timestamp}, function (err, doc) {
-      if (err) throw err
-      // concatenate each doc.text into a file
-      // send message with file to each user
-      // render each doc.text to a game page
-      // display first sentence/last sentence on index page
+      if (doc.counter < 9){ // if 8 rounds or fewer
+        doc.text.push(req.body.text) // push message on to games.text
+        doc.user_name.push(req.body.user_name)
+        doc.counter += 1
+        games.update({_id: doc._id}, doc, function (err, entry) {
+          if (err) throw err
+          var payload = configPayload(doc)
+          console.log('payload', payload)
+          sendPayload(payload)
+          console.log('payload sent with unirest')
+          res.redirect('/games')
+        })
+      }
     })
   } else { // if new game
     console.log('game not found, starting new game', req.body);
