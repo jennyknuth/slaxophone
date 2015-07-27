@@ -129,7 +129,14 @@ var configPayload = function (obj) {
 var sendPayload = function (JSONString) {
   unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=D0869FA3Y') // eventually the channel will be the thread ID
   .header('Accept', 'application/json')
-    .send(JSONstring)
+    .send({
+      "id": 1,
+      "type": "message",
+      "text": "this is being sent to Jenny, for now",
+      "username": "slaxophone-bot",
+      "as_user": "true",
+      "channel": "D0869FA3Y"
+    })
     .end(function (response) {
       console.log('response body from unirest', response.body);
     });
