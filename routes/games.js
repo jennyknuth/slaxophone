@@ -149,7 +149,7 @@ var sendPayload = function (JSONstring) {
 router.post('/update', function(req, res, next) {
   console.log('is timestamp in req.body? ', req.body);// timestamp, text, username, but no counter, etc.
   console.log('counter ', req.body.counter);
-  if (req.body.timestamp) { // if established game
+  if (req.body.timestamp && counter < 9) { // if established game and less than 8 rounds
     games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
       if (err) throw err
       doc.text.push(req.body.text) // push message on to games.text
@@ -163,6 +163,14 @@ router.post('/update', function(req, res, next) {
         console.log('payload sent with unirest')
         res.redirect('/games')
       })
+    })
+  } else if (counter >= 9) {
+    games.findOne({timestamp: req.body.timestamp}, function (err, doc) {
+      if (err) throw err
+      // concatenate each doc.text into a file
+      // send message with file to each user
+      // render each doc.text to a game page
+      // display first sentence/last sentence on index page
     })
   } else { // if new game
     console.log('game not found, starting new game', req.body);
@@ -199,7 +207,4 @@ router.get('/:id/edit', function(req, res, next) {
   })
 })
 
-// router.post('/update', function (req, res, next) {
-//   // incoming from Slack
-// })
 module.exports = router;
