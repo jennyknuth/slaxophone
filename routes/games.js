@@ -47,7 +47,7 @@ getPlayers()
 
 var Game = function (body) {
   // var timestamp = Math.floor(new Date() / 1000).toString()
-  this.message = [body.text]
+  this.text = [body.text]
   this.user_id = [body.user_id]
   this.counter = 1
   this.draw = 'Please illustrate this sentence: '
@@ -103,11 +103,10 @@ var configPayload = function (obj) {
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
-    obj.text = obj.write + obj.message.pop()
+    obj.text = obj.write + obj.text.pop()
   } else {
-    obj.text = obj.draw + obj.message.pop()
+    obj.text = obj.draw + obj.text.pop()
   }
-  obj.message = null
   // obj.username='slaxophone-bot'
   obj = JSON.stringify(obj)
   console.log('stringified JSON?: ', obj);
