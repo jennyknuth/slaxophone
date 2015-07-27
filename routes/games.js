@@ -107,6 +107,7 @@ var configPayload = function (obj) {
   } else {
     obj.text = obj.draw + obj.message.pop()
   }
+  obj.message = null
   // obj.username='slaxophone-bot'
   obj = JSON.stringify(obj)
   console.log('stringified JSON?: ', obj);
