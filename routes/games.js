@@ -4,6 +4,21 @@ var users = db.get('users');
 var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
+var Slack = require('slack-client');
+var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
+
+var slackbot = new Slack(token, true, true);
+
+
+slackbot.on('message', function(message) {
+  console.log(message);
+  channel = slack.getChannelGroupOrDMByID(message.channel)
+  user = slack.getUserByID(message.user)
+  response = ''
+});
+
+
+// slack.login();
 
 // use for a clean slate at any given time
 var removeUsers = function () {
