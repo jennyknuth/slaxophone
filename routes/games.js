@@ -147,6 +147,7 @@ var sendPayload = function (JSONstring) {
 
 // this will be the route for slash command coming in from Slack, whether new or an update
 router.post('/update', function(req, res, next) {
+  var counter = 0
   console.log('is timestamp in req.body? ', req.body);// timestamp, text, username, but no counter, etc.
   console.log('counter ', req.body.counter);
   if (req.body.timestamp && counter < 9) { // if established game and less than 8 rounds
