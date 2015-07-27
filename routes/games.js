@@ -9,18 +9,16 @@ var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
 
 var slackbot = new Slack(token, true, true);
 
-
 slackbot.on('message', function(message) {
   console.log(message);
-  channel = slack.getChannelGroupOrDMByID(message.channel)
-  user = slack.getUserByID(message.user)
+  channel = slackbot.getDMByID(message.id)
+  user = slackbot.getDMByName(message.user)
   response = ''
 });
 
+// slackbot.login();
 
-// slack.login();
-
-// use for a clean slate at any given time
+// use for a clean slate in the database at any given time
 var removeUsers = function () {
   users.remove({})
 }
@@ -52,10 +50,6 @@ router.get('/new', function (req, res, next) {
   res.render('games/new')
 })
 
-// router.get('/update', function (req, res, next) {
-//   res.render('games/test')
-// })
-
 //configuration for slaxophone-bot: have not been able to get this to work
 // var configPayload = function (obj) {
 //   obj.id = obj.timestamp
@@ -76,7 +70,7 @@ router.get('/new', function (req, res, next) {
 // make payload for incoming webhook: this works
 var configPayload = function (obj) {
   obj.user_name = obj.user_name.pop()
-  obj.channel = '@knuth'//'@' + obj.user_name
+  obj.channel = '@' + obj.user_name
   if (obj.counter % 2 === 0) {
     obj.text = obj.write + obj.text.pop()
   } else {
