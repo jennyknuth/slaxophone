@@ -111,7 +111,7 @@ var configPayload = function (obj) {
   pObj.username='slaxophone-bot'
   pObj.as_user='true'
   // pObj = JSON.stringify(pObj)
-  console.log('stringified JSON?: ', pObj);
+  // console.log('stringified JSON?: ', pObj);
   return pObj
 }
 
@@ -125,10 +125,10 @@ var configPayload = function (obj) {
 // }
 
 // send via RTM API for chat.postMessage slaxophone-bot: this works
-var sendPayload = function (JSONString) {
+var sendPayload = function (JSONobj) {
   unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=D0869FA3Y') // eventually the channel will be the thread ID
   .header('Accept', 'application/json')
-    .send(JSONString)
+    .send(JSONobj)
     .end(function (response) {
       console.log('response body from unirest', response.body);
     });
