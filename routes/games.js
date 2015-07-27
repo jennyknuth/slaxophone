@@ -53,11 +53,12 @@ router.get('/new', function (req, res, next) {
 //configuration for slaxophone-bot: have not been able to get this to work
 var configPayload = function (obj) {
   obj = {
-    "id": 1,
-    "type": "message",
-    "channel": "D085X8MJR",
-    "text": "Hello world—does this come from slaxophone-bot?"
-    "username": "Slaxophone-bot"
+    id: 1,
+    type: "message",
+    channel: "D085X8MJR", // don't hard code this!!
+    text: "Hello world—does this come from slaxophone-bot?",
+    username: "Slaxophone-bot",
+    as_user: "true"
   }
   // obj.id = obj.timestamp
   // obj.type = "message"
