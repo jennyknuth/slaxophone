@@ -1,66 +1,72 @@
 var db = require('monk')(process.env.MONGOLAB_URI);
 var games = db.get('games');
-var users = db.get('users');
+var players = db.get('players');
 var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
-var Slack = require('slack-client');
-var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
 
-var slackbot = new Slack(token, true, true);
-
-slackbot.on('message', function(message) {
-  console.log(message);
-  channel = slackbot.getDMByID(message.id)
-  user = slackbot.getDMByName(message.user)
-  response = ''
-});
+// var Slack = require('slack-client');
+// var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
+//
+// var slackbot = new Slack(token, true, true);
+//
+// slackbot.on('message', function(message) {
+//   console.log(message);
+//   channel = slackbot.getDMByID(message.id)
+//   user = slackbot.getDMByName(message.user)
+//   response = ''
+// });
 
 // slackbot.login();
 
 // use for a clean slate in the database at any given time
-var removeUsers = function () {
-  users.remove({})
+var removePlayers = function () {
+  players.remove({})
 }
 
-// use to add current users to the users collection
-var getUsers = function () {
-  unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1Y')
+// use to add current players to the players collection
+var getPlayers = function () {
+  unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&pretty=1Y')
   .end(function (response) {
-    var members = response.body.users; // an array
-    members.forEach( function (user) {
-      users.find({id: user.id}, function (err, doc) {
-        if (!doc) {
-          users.insert({id: user.id, name: user.name})
+    console.log("ims: ", response.body.ims)
+    var ims = response.body.ims; // an array
+    ims.forEach( function (player) {
+      console.log("player: ", player);
+      players.find({id: player.user}, function (err, docs) {
+        if (docs.length === 0) {
+          console.log("no player found");
+          players.insert({id: player.user, channel: player.id})
+          players.remove({id: "USLACKBOT"})
+          console.log('players added from API call');
         }
       })
     })
   })
 }
 
-router.get('/', function(req, res, next) {
-  games.find({}, function(err, docs) {
-    if (err) throw err
-    // console.log('docs', docs);
-    res.render('games/index', {docs: docs})
-  })
-});
+removePlayers()
+getPlayers()
 
-router.get('/new', function (req, res, next) {
-  res.render('games/new')
-})
+var Game = function (body) {
+  // var timestamp = Math.floor(new Date() / 1000).toString() 
+  this.message = [body.text]
+  this.user_id = [body.user_id]
+  this.counter = 1
+  this.draw = 'Please illustrate this sentence: '
+  this.write = 'Write a caption for this picture: '
+}
 
 //configuration for slaxophone-bot: have not been able to get this to work
-var configPayload = function (obj) {
-  obj = {
-    id: 1,
-    type: "message",
-    channel: "D085X8MJR", // don't hard code this!!
-    text: "Hello world—does this come from slaxophone-bot?",
-    username: "Slaxophone-bot",
-    as_user: "true"
-  }
-  // obj.id = obj.timestamp
+// var configPayload = function (obj) {
+//   obj = {
+//     id: 1,
+//     type: "message",
+//     channel: "D085X8MJR", // don't hard code this!!
+//     text: "Hello world—does this come from slaxophone-bot?",
+//     username: "Slaxophone-bot",
+//     as_user: "true"
+//   }
+//   // obj.id = obj.timestamp
   // obj.type = "message"
   // obj.user_name = obj.user_name.pop()
   // obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
@@ -70,10 +76,10 @@ var configPayload = function (obj) {
   //   obj.text = obj.draw + obj.text.pop()
   // }
   // obj.username='Slaxophone-bot' //slaxophone-bot
-  obj = JSON.stringify(obj)
-  console.log('stringified JSON?: ', obj);
-  return obj
-}
+//   obj = JSON.stringify(obj)
+//   console.log('stringified JSON?: ', obj);
+//   return obj
+// }
 
 // make payload for incoming webhook: this works
 // var configPayload = function (obj) {
@@ -90,29 +96,21 @@ var configPayload = function (obj) {
 //   return obj
 // }
 
-// configuration for RTM API: don't know how to use this
+// configuration for RTM API: this works
 var configPayload = function (obj) {
-  obj = {
-    "id": 1,
-    "type": "message",
-    "text": "here is the content of my message",
-    "username": "slaxophone-bot",
-    "as_user": "true",
-    "channel": "D0869FA3Y"
-  }
-  // obj.id = obj.timestamp
-  // obj.type = "message"
-  // // obj.user_name = obj.user_name.pop()
+  obj.id = 1 // hard coding for now, maybe make it equal to game _id later?
+  obj.type = "message"
+  obj.user_id = obj.user_id.pop()
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
-  // if (obj.counter % 2 === 0) {
-  //   obj.text = obj.write + obj.text.pop()
-  // } else {
-  //   obj.text = obj.draw + obj.text.pop()
-  // }
-  // // obj.username='slaxophone-bot'
-  // obj = JSON.stringify(obj)
-//   console.log('stringified JSON?: ', obj);
+  if (obj.counter % 2 === 0) {
+    obj.text = obj.write + obj.text.pop()
+  } else {
+    obj.text = obj.draw + obj.text.pop()
+  }
+  // obj.username='slaxophone-bot'
+  obj = JSON.stringify(obj)
+  console.log('stringified JSON?: ', obj);
   return obj
 }
 
@@ -125,9 +123,9 @@ var configPayload = function (obj) {
 //         })
 // }
 
-// send via RTM API: this works
+// send via RTM API for chat.postMessage slaxophone-bot: this works
 var sendPayload = function (JSONString) {
-  unirest.post('https://slack.com/api/im.open?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=U0861KFLJ') // eventually the channel will be the thread ID
+  unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=D0869FA3Y') // eventually the channel will be the thread ID
   .header('Accept', 'application/json')
     .send(JSONString)
     .end(function (response) {
@@ -165,9 +163,21 @@ var sendPayload = function (JSONString) {
 //   });
 // }
 
+router.get('/', function(req, res, next) {
+  games.find({}, function(err, docs) {
+    if (err) throw err
+    // console.log('docs', docs);
+    res.render('games/index', {docs: docs})
+  })
+});
+
+router.get('/new', function (req, res, next) {
+  res.render('games/new')
+})
+
 // this will be the route for slash command coming in from Slack, whether new or an update
 router.post('/update', function(req, res, next) {
-  console.log('is timestamp in req.body? ', req.body);// timestamp, text, username, but no counter, etc.
+  console.log('req.body to update route ', req.body);
   console.log('counter ', req.body.counter);
   if (req.body.timestamp) { // if established game
     games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
@@ -187,18 +197,13 @@ router.post('/update', function(req, res, next) {
       }
     })
   } else { // if new game
+
     console.log('game not found, starting new game', req.body);
     // req.body.timestamp = new Date() // take this out for slack version
-    var timestamp = Math.floor(new Date() / 1000).toString()
-    console.log('timestamp', timestamp);
-    req.body.timestamp = timestamp
-    req.body.text = [req.body.text]
-    req.body.user_name = [req.body.user_name]
-    req.body.counter = 1
-    req.body.draw = 'Please illustrate this sentence: '
-    req.body.write = 'Write a caption for this picture: '
+    var game = new Game(req.body)
+    console.log("new game object: ", game);
 
-    games.insert(req.body, function (err, doc) {
+    games.insert(game, function (err, doc) {
       var payload = configPayload(doc)
       console.log('payload new: ', payload)
       sendPayload(payload)
