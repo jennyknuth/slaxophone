@@ -5,6 +5,8 @@ var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
 
+var ROUNDS = 9;
+
 // var Slack = require('slack-client');
 // var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
 //
@@ -28,16 +30,12 @@ var removePlayers = function () {
 var getPlayers = function () {
   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&pretty=1Y')
   .end(function (response) {
-    console.log("ims: ", response.body.ims)
     var ims = response.body.ims; // an array
     ims.forEach( function (player) {
-      console.log("player: ", player);
       players.find({id: player.user}, function (err, docs) {
         if (docs.length === 0) {
-          console.log("no player found");
           players.insert({id: player.user, channel: player.id})
-          players.remove({id: "USLACKBOT"})
-          console.log('players added from API call');
+          players.remove({id: "USLACKBOT"}) // bot's not playing!
         }
       })
     })
@@ -48,7 +46,7 @@ removePlayers()
 getPlayers()
 
 var Game = function (body) {
-  // var timestamp = Math.floor(new Date() / 1000).toString() 
+  // var timestamp = Math.floor(new Date() / 1000).toString()
   this.message = [body.text]
   this.user_id = [body.user_id]
   this.counter = 1
@@ -182,7 +180,7 @@ router.post('/update', function(req, res, next) {
   if (req.body.timestamp) { // if established game
     games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
       if (err) throw err
-      if (doc.counter < 9){ // if 8 rounds or fewer
+      if (doc.counter < ROUNDS){ // if # of ROUNDS or fewer
         doc.text.push(req.body.text) // push message on to games.text
         doc.user_name.push(req.body.user_name)
         doc.counter += 1
