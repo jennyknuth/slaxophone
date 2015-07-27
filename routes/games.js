@@ -110,7 +110,7 @@ var configPayload = function (obj) {
   }
   pObj.username='slaxophone-bot'
   pObj.as_user='true'
-  pObj = JSON.stringify(pObj)
+  // pObj = JSON.stringify(pObj)
   console.log('stringified JSON?: ', pObj);
   return pObj
 }
