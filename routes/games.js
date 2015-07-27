@@ -96,6 +96,7 @@ var Game = function (body) {
 
 // configuration for RTM API: this works
 var configPayload = function (obj) {
+  console.log('object coming in to config', obj);
   obj.id = 1 // hard coding for now, maybe make it equal to game _id later?
   obj.type = "message"
   obj.user_id = obj.user_id.pop()
