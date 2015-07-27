@@ -127,7 +127,7 @@ var configPayload = function (obj) {
 
 // send via RTM API
 var sendPayload = function (JSONString) {
-  unirest.post('https://slack.com/api/chat.postMessage?token=' + SLAXOPHONE_BOT_TOKEN + '&channel=D0869FA3Y') // eventually the channel will be the thread ID
+  unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=D0869FA3Y') // eventually the channel will be the thread ID
   .header('Accept', 'application/json')
     .send(JSONstring)
     .end(function (response) {
