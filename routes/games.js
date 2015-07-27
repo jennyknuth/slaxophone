@@ -102,9 +102,9 @@ var configPayload = function (obj) {
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
-    obj.text = obj.write + obj.text.pop()
+    obj.text = obj.write + obj.message.pop()
   } else {
-    obj.text = obj.draw + obj.text.pop()
+    obj.text = obj.draw + obj.message.pop()
   }
   // obj.username='slaxophone-bot'
   obj = JSON.stringify(obj)
