@@ -54,47 +54,16 @@ var Game = function (body) {
   this.write = 'Write a caption for this picture: '
 }
 
-//configuration for slaxophone-bot: have not been able to get this to work
-// var configPayload = function (obj) {
-//   obj = {
-//     id: 1,
-//     type: "message",
-//     channel: "D085X8MJR", // don't hard code this!!
-//     text: "Hello world—does this come from slaxophone-bot?",
-//     username: "Slaxophone-bot",
-//     as_user: "true"
-//   }
-//   // obj.id = obj.timestamp
-  // obj.type = "message"
-  // obj.user_name = obj.user_name.pop()
-  // obj.channel = '@' + obj.user_name // right now, sends to last user (me), need to change this
-  // if (obj.counter % 2 === 0) {
-  //   obj.text = obj.write + obj.text.pop()
-  // } else {
-  //   obj.text = obj.draw + obj.text.pop()
-  // }
-  // obj.username='Slaxophone-bot' //slaxophone-bot
-//   obj = JSON.stringify(obj)
-//   console.log('stringified JSON?: ', obj);
-//   return obj
+// var getNewMessage = function () {
+//   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1')
+//         .end(function (response) {
+//           console.log(response.ims[0]);
+//           var slackIms = response.body.ims; // an array
+//           res.render('index', {docs: slackIms});
+//         })
 // }
 
-// make payload for incoming webhook: this works
-// var configPayload = function (obj) {
-//   obj.user_name = obj.user_name.pop()
-//   obj.channel = '@' + obj.user_name
-//   if (obj.counter % 2 === 0) {
-//     obj.text = obj.write + obj.text.pop()
-//   } else {
-//     obj.text = obj.draw + obj.text.pop()
-//   }
-//   obj.username='slaxophone-bot'
-//   obj = JSON.stringify(obj)
-//   console.log('stringified JSON?: ', obj);
-//   return obj
-// }
-
-// configuration for RTM API: this works
+// configuration for RTM API from slaxophone-bot: this works
 var configPayload = function (obj) {
   console.log('object coming in to config', obj);
   var pObj = {}
@@ -115,48 +84,36 @@ var configPayload = function (obj) {
   return pObj
 }
 
-// var getNewMessage = function () {
-//   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1')
-//         .end(function (response) {
-//           console.log(response.ims[0]);
-//           var slackIms = response.body.ims; // an array
-//           res.render('index', {docs: slackIms});
-//         })
-// }
-
 // send via RTM API for chat.postMessage slaxophone-bot: this works
 var sendPayload = function (JSONobj) {
-  unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=D0869FA3Y') // eventually the channel will be the thread ID
-  .header('Accept', 'application/json')
-    .send(JSONobj)
-    .end(function (response) {
-      console.log('response body from unirest', response.body);
-    });
+  players.findOne({user_id: JSONobj.user_id}, function (err, doc) { // ultimately: find a user who has not played yet
+    console.log('player doc', doc);
+    unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + doc.channel) //
+    .header('Accept', 'application/json')
+      .send(JSONobj)
+      .end(function (response) {
+        console.log('response body from unirest', response.body);
+      });
+  })
 }
+
+//make payload for incoming webhook: this works
+// var configPayload = function (obj) {
+//   obj.user_name = obj.user_name.pop()
+//   obj.channel = '@' + obj.user_name
+//   if (obj.counter % 2 === 0) {
+//     obj.text = obj.write + obj.text.pop()
+//   } else {
+//     obj.text = obj.draw + obj.text.pop()
+//   }
+//   obj.username='slaxophonebot'
+//   obj = JSON.stringify(obj)
+//   console.log('stringified JSON?: ', obj);
+//   return obj
 
 // send via webhook: this works
 // var sendPayload = function (JSONstring) {
 //   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
-//   .header('Accept', 'application/json')
-//   .send(JSONstring)
-//   .end(function (response) {
-//     console.log('response body from unirest', response.body);
-//   });
-// }
-
-//send via slaxophone-bot: have not been able to get this to work
-// var sendPayload = function (JSONstring) {
-//   unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + process.env.SLACKBOT_KEY + '&channel=U083ARY6L')
-//   .header('Accept', 'application/json')
-//   .send(JSONstring)
-//   .end(function (response) {
-//     console.log('response body from unirest', response.body);
-//   });
-// }
-
-// send via slackbot: needs text only, no payload, but couldn't get that to work either...
-// var sendPayload = function (JSONstring) {
-//   unirest.post('https://slaxophone.slack.com/services/hooks/slackbot?token=' + process.env.SLACKBOT_KEY + '&channel=U083ARY6L')
 //   .header('Accept', 'application/json')
 //   .send(JSONstring)
 //   .end(function (response) {
@@ -172,46 +129,46 @@ router.get('/', function(req, res, next) {
   })
 });
 
+// route for new games coming in from Slack with slash command
+router.post('/', function(req, res, next) {
+  console.log('starting new game', req.body);
+  // req.body.timestamp = new Date() // take this out for slack version
+  var game = new Game(req.body)
+  console.log("new game object: ", game);
+
+  games.insert(game, function (err, doc) {
+    var payload = configPayload(doc)
+    console.log('payload new: ', payload)
+    sendPayload(payload)
+    console.log('payload sent with unirest')
+    res.redirect('/games')
+  })
+})
+
 router.get('/new', function (req, res, next) {
   res.render('games/new')
 })
 
-// this will be the route for slash command coming in from Slack, whether new or an update
+// this will be the route for all new rounds
 router.post('/update', function(req, res, next) {
   console.log('req.body to update route ', req.body);
   console.log('counter ', req.body.counter);
-  if (req.body.timestamp) { // if established game
-    games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
-      if (err) throw err
-      if (doc.counter < ROUNDS){ // if # of ROUNDS or fewer
-        doc.text.push(req.body.text) // push message on to games.text
-        doc.user_name.push(req.body.user_name)
-        doc.counter += 1
-        games.update({_id: doc._id}, doc, function (err, entry) {
-          if (err) throw err
-          var payload = configPayload(doc)
-          console.log('payload', payload)
-          sendPayload(payload)
-          console.log('payload sent with unirest')
-          res.redirect('/games')
-        })
-      }
-    })
-  } else { // if new game
-
-    console.log('game not found, starting new game', req.body);
-    // req.body.timestamp = new Date() // take this out for slack version
-    var game = new Game(req.body)
-    console.log("new game object: ", game);
-
-    games.insert(game, function (err, doc) {
-      var payload = configPayload(doc)
-      console.log('payload new: ', payload)
-      sendPayload(payload)
-      console.log('payload sent with unirest')
-      res.redirect('/games')
-    })
-  }
+  games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
+    if (err) throw err
+    if (doc.counter < ROUNDS){ // if # of ROUNDS or fewer
+      doc.text.push(req.body.text) // push message on to games.text
+      doc.user_name.push(req.body.user_name)
+      doc.counter += 1
+      games.update({_id: doc._id}, doc, function (err, entry) {
+        if (err) throw err
+        var payload = configPayload(doc)
+        console.log('payload', payload)
+        sendPayload(payload)
+        console.log('payload sent with unirest')
+        res.redirect('/games')
+      })
+    }
+  })
 })
 
 router.get('/:id', function (req, res, next) {
