@@ -7,20 +7,6 @@ var unirest = require('unirest');
 
 var ROUNDS = 9;
 
-// var Slack = require('slack-client');
-// var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
-//
-// var slackbot = new Slack(token, true, true);
-//
-// slackbot.on('message', function(message) {
-//   console.log(message);
-//   channel = slackbot.getDMByID(message.id)
-//   user = slackbot.getDMByName(message.user)
-//   response = ''
-// });
-
-// slackbot.login();
-
 // use for a clean slate in the database at any given time
 var removePlayers = function () {
   players.remove({})
