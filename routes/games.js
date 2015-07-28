@@ -47,8 +47,7 @@ var getNewMessage = function (channel) {
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
         .end(function (response) {
           var messages = response.body.messages
-          console.log(messages);
-          console.log(messages[0].file.url)
+          console.log("picture url: ", messages[0].file.url)
         })
 }
 
