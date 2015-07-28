@@ -165,7 +165,7 @@ router.post('/update', function(req, res, next) {
   putNewMessageInDatabase(req.body.channel_id)
   games.findOne({}, function (err, doc) { //eventually find THE game
     if (doc.counter < ROUNDS) {
-      var payload = configurePayload(doc)
+      var payload = configPayload(doc)
       console.log('next round payload, check for image: ', payload)
       sendPayload(payload)
       console.log('next payload sent with unirest')
