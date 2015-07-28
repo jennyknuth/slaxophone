@@ -82,7 +82,7 @@ var configPayload = function (obj) {
   pObj.user_id = obj.user_id.pop()
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
-  if (obj.counter % 2 === 0) {
+  if (obj.counter % 2 === 1) {
     pObj.text = obj.write + ' <"' + obj.text.pop() + '"> ' + '\n(Follow your message with another message containing the command /reply)'
   } else {
     pObj.text = obj.draw + obj.text.pop() + '\n(Follow your upload with another message containing the command /reply)'
