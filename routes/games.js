@@ -57,10 +57,19 @@ var getNewMessage = function (channel) {
             console.log('doc.text before: ', doc.text);
             doc.text.push(item)
             console.log('doc.text after: ', doc.text);
-            // also push user and increment counter
+            var person = messages[0].user
+            console.log('person: ', person);
+            console.log('doc.user_id before: ', doc.user_id);
+            doc.user_id.push(person)
+            console.log('doc.user_id after: ', doc.user_id);
+            console.log('counter before: ', doc.counter);
+            doc.counter += 1
+            console.log('counter after: ', doc.counter);
+            console.log('doc to go into update');
+            games.update({}, doc, function (err, doc) {
+              console.log(doc)
+            })
           })
-
-
         })
 }
 
@@ -112,7 +121,7 @@ var sendPayload = function (JSONobj) {
 //   console.log('stringified JSON?: ', obj);
 //   return obj
 
-// send via webhook: this works
+// send via incoming webhook: this works
 // var sendPayload = function (JSONstring) {
 //   unirest.post('https://hooks.slack.com/services/' + process.env.SLACK_KEYS)
 //   .header('Accept', 'application/json')
@@ -154,6 +163,7 @@ router.get('/new', function (req, res, next) {
 router.post('/update', function(req, res, next) {
   console.log("req.body.channel_id ", req.body.channel_id);
   getNewMessage(req.body.channel_id)
+  //send payload to new user (phew!)
 })
 
 router.get('/:id', function (req, res, next) {
