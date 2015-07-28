@@ -39,7 +39,7 @@ var Game = function (body) {
   this.user_id = [body.user_id]
   this.counter = 1
   this.draw = 'Please illustrate this sentence: '
-  this.write = 'Start your reply with "/reply." Write a caption for this picture: '
+  this.write = 'Write a caption for this picture: '
 }
 
 var putNewMessageInDatabase = function (channel) {
@@ -63,7 +63,7 @@ var putNewMessageInDatabase = function (channel) {
             doc.user_id.push(person)
             console.log('doc.user_id after: ', doc.user_id);
             console.log('counter before: ', doc.counter);
-            doc.counter += 1
+            doc.counter++
             console.log('counter after: ', doc.counter);
             console.log('doc to go into update');
             games.update({}, doc, function (err, doc) {
