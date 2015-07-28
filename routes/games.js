@@ -38,25 +38,16 @@ var Game = function (body) {
   this.text = [body.text]
   this.user_id = [body.user_id]
   this.counter = 1
-  this.draw = 'Start your reply with "/reply." Please illustrate this sentence: '
+  this.draw = 'Please illustrate this sentence: '
   this.write = 'Start your reply with "/reply." Write a caption for this picture: '
 }
 
-// var getNewMessage = function () {
-//   console.log("in getNewMessage");
-//   players.find({}, function (err, docs) {
-//     console.log('players: ', docs);
-//     docs.forEach(function(player) {
-//       DMchannel = player.channel
-//       unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + DMchannel)
-//             .end(function (response) {
-//               console.log("new messages from API: ", response.body.messages);
-//             })
-//     })
-//   })
-// }
-
-// getNewMessage()
+var getNewMessage = function (channel) {
+  unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel)
+        .end(function (response) {
+          console.log("new messages from API: ", response.body.message[0]);
+        })
+}
 
 // configuration for RTM API from slaxophone-bot: this works
 var configPayload = function (obj) {
@@ -68,9 +59,9 @@ var configPayload = function (obj) {
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
-    pObj.text = obj.write + obj.text.pop()
+    pObj.text = obj.write + obj.text.pop() + ' Follow your message with another message containing the command /reply'
   } else {
-    pObj.text = obj.draw + obj.text.pop()
+    pObj.text = obj.draw + obj.text.pop() + ' Follow your upload with another message containing the command /reply'
   }
   pObj.username='slaxophone-bot'
   pObj.as_user='true'
@@ -146,6 +137,8 @@ router.get('/new', function (req, res, next) {
 // this will be the route for all new rounds
 router.post('/update', function(req, res, next) {
   console.log(req.body);
+  getNewMessage(req.body.channel_id)
+
 
   games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
     if (err) throw err
