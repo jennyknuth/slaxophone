@@ -43,11 +43,24 @@ var Game = function (body) {
 }
 
 var getNewMessage = function (channel) {
-  console.log("inside getNewMessage");
+  // put some conditionals here to make sure rounds are not complete and find file or text
+
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
         .end(function (response) {
           var messages = response.body.messages
+          console.log("text: ", messages[0].text)
           console.log("picture url: ", messages[0].file.url)
+          games.findOne({}, function (err, doc) { // eventually find THE game, ahem
+            console.log('doc: ', doc);
+            var item = messages[0].file.url || messages.text
+            console.log('item: ', item);
+            console.log('doc.text before: ', doc.text);
+            doc.text.push(item)
+            console.log('doc.text after: ', doc.text);
+            // also push user and increment counter
+          })
+
+
         })
 }
 
@@ -119,6 +132,7 @@ router.get('/', function(req, res, next) {
 
 // route for new games coming in from Slack with slash command
 router.post('/', function(req, res, next) {
+  games.remove({}) // this ensures one game at a time, take out when games can be tracked with cookies
   console.log('starting new game', req.body);
   var game = new Game(req.body)
   console.log("new game object: ", game);
