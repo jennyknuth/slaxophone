@@ -28,26 +28,35 @@ var getPlayers = function () {
   })
 }
 
-removePlayers()
-getPlayers()
+// removePlayers()
+// console.log("players removed");
+// getPlayers()
+// console.log("players added");
 
 var Game = function (body) {
   // var timestamp = Math.floor(new Date() / 1000).toString()
   this.text = [body.text]
   this.user_id = [body.user_id]
   this.counter = 1
-  this.draw = 'Please illustrate this sentence: '
-  this.write = 'Write a caption for this picture: '
+  this.draw = 'Start your reply with "/reply." Please illustrate this sentence: '
+  this.write = 'Start your reply with "/reply." Write a caption for this picture: '
 }
 
 // var getNewMessage = function () {
-//   unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1')
-//         .end(function (response) {
-//           console.log(response.ims[0]);
-//           var slackIms = response.body.ims; // an array
-//           res.render('index', {docs: slackIms});
-//         })
+//   console.log("in getNewMessage");
+//   players.find({}, function (err, docs) {
+//     console.log('players: ', docs);
+//     docs.forEach(function(player) {
+//       DMchannel = player.channel
+//       unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + DMchannel)
+//             .end(function (response) {
+//               console.log("new messages from API: ", response.body.messages);
+//             })
+//     })
+//   })
 // }
+
+// getNewMessage()
 
 // configuration for RTM API from slaxophone-bot: this works
 var configPayload = function (obj) {
@@ -118,7 +127,6 @@ router.get('/', function(req, res, next) {
 // route for new games coming in from Slack with slash command
 router.post('/', function(req, res, next) {
   console.log('starting new game', req.body);
-  // req.body.timestamp = new Date() // take this out for slack version
   var game = new Game(req.body)
   console.log("new game object: ", game);
 
@@ -137,8 +145,8 @@ router.get('/new', function (req, res, next) {
 
 // this will be the route for all new rounds
 router.post('/update', function(req, res, next) {
-  console.log('req.body to update route ', req.body);
-  console.log('counter ', req.body.counter);
+  console.log(req.body);
+
   games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
     if (err) throw err
     if (doc.counter < ROUNDS){ // if # of ROUNDS or fewer

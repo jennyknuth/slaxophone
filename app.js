@@ -11,6 +11,57 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/site');
 var games = require('./routes/games');
 
+var Slack = require('slack-client');
+var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
+
+var slackbot = new Slack(token, true, true);
+
+slackbot.on('open', function() {
+  var channel, channels, group, groups, id, messages, unreads;
+  channels = [];
+  groups = [];
+  unreads = slack.getUnreadCount();
+  channels = (function() {
+    var _ref, _results;
+    _ref = slack.channels;
+    _results = [];
+    for (id in _ref) {
+      channel = _ref[id];
+      if (channel.is_member) {
+        _results.push("#" + channel.name);
+      }
+    }
+    return _results;
+  })();
+  groups = (function() {
+    var _ref, _results;
+    _ref = slack.groups;
+    _results = [];
+    for (id in _ref) {
+      group = _ref[id];
+      if (group.is_open && !group.is_archived) {
+        _results.push(group.name);
+      }
+    }
+    return _results;
+  })();
+  console.log("Welcome to Slack. You are @" + slack.self.name + " of " + slack.team.name);
+  console.log('You are in: ' + channels.join(', '));
+  console.log('As well as: ' + groups.join(', '));
+  messages = unreads === 1 ? 'message' : 'messages';
+  return console.log("You have " + unreads + " unread " + messages);
+});
+
+slackbot.on('message', function(message) {
+  console.log("got a message");
+  console.log(message);
+  channel = slackbot.getDMByID(message.id)
+  user = slackbot.getDMByName(message.user)
+  response = ''
+});
+
+// slackbot.login();
+
 var app = express();
 
 // view engine setup

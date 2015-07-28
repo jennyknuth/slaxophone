@@ -20,19 +20,6 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-var Slack = require('slack-client');
-var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
-
-var slackbot = new Slack(token, true, true);
-
-slackbot.on('message', function(message) {
-  console.log(message);
-  channel = slackbot.getDMByID(message.id)
-  user = slackbot.getDMByName(message.user)
-  response = ''
-});
-
-slackbot.login();
 
 /**
  * Listen on provided port, on all network interfaces.
