@@ -42,7 +42,7 @@ var Game = function (body) {
   this.write = 'Start your reply with "/reply." Write a caption for this picture: '
 }
 
-var getNewMessage = function (channel) {
+var putNewMessageInDatabase = function (channel) {
   // put some conditionals here to make sure rounds are not complete and find file or text
 
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
@@ -83,9 +83,9 @@ var configPayload = function (obj) {
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
-    pObj.text = obj.write + obj.text.pop() + ' Follow your message with another message containing the command /reply'
+    pObj.text = obj.write + obj.text.pop() + '/n (Follow your message with another message containing the command /reply)'
   } else {
-    pObj.text = obj.draw + obj.text.pop() + ' Follow your upload with another message containing the command /reply'
+    pObj.text = obj.draw + obj.text.pop() + '/n (Follow your upload with another message containing the command /reply)'
   }
   pObj.username='slaxophone-bot'
   pObj.as_user='true'
@@ -159,11 +159,21 @@ router.get('/new', function (req, res, next) {
   res.render('games/new')
 })
 
-// this will be the route for all new rounds
+// this will be the route for all new rounds after game is established
 router.post('/update', function(req, res, next) {
   console.log("req.body.channel_id ", req.body.channel_id);
-  getNewMessage(req.body.channel_id)
-  //send payload to new user (phew!)
+  putNewMessageInDatabase(req.body.channel_id)
+  games.findOne({}, function (err, doc) { //eventually find THE game
+    if (doc.counter < ROUNDS) {
+      var payload = configurePayload(doc)
+      console.log('next round payload: ', payload)
+      sendPayload(payload)
+      console.log('next payload sent with unirest')
+      res.redirect('/games')
+    } else {
+      //format and send file to all users
+    }
+  })
 })
 
 router.get('/:id', function (req, res, next) {
