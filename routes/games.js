@@ -48,10 +48,10 @@ var putNewMessageInDatabase = function (channel) {
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
         .end(function (response) {
           var messages = response.body.messages
-          console.log("text: ", messages[0].text)
-          console.log("picture url: ", messages[0].file.url)
+          console.log("API text: ", messages[0].text)
+          console.log("API picture url: ", messages[0].file.url)
           games.findOne({}, function (err, doc) { // eventually find THE game, ahem
-            console.log('doc: ', doc);
+            // console.log('doc: ', doc);
             console.log('counter before: ', doc.counter);
             doc.counter += 1
             console.log('counter after: ', doc.counter);
@@ -63,11 +63,11 @@ var putNewMessageInDatabase = function (channel) {
             }
             console.log('doc.text after: ', doc.text);
             var person = messages[0].user
-            console.log('person: ', person);
+            // console.log('person: ', person);
             console.log('doc.user_id before: ', doc.user_id);
             doc.user_id.push(person)
             console.log('doc.user_id after: ', doc.user_id);
-            console.log('doc to go into update', doc);
+            // console.log('doc to go into update', doc);
             games.insert(doc, function (err, doc) {
               console.log("updated game doc", doc)
             })
@@ -77,7 +77,7 @@ var putNewMessageInDatabase = function (channel) {
 
 // configuration for RTM API from slaxophone-bot: this works
 var configPayload = function (obj) {
-  console.log('object coming in to config', obj);
+  // console.log('object coming in to config', obj);
   var payload = {}
   payload.id = 1 // hard coding for now, maybe make it equal to game _id later?
   payload.type = "message"
@@ -164,12 +164,13 @@ router.get('/new', function (req, res, next) {
 
 // this will be the route for all rounds after game is established
 router.post('/update', function(req, res, next) {
-  console.log("req.body.channel_id ", req.body.channel_id);
+  // console.log("req.body.channel_id ", req.body.channel_id);
   putNewMessageInDatabase(req.body.channel_id)
   games.findOne({}, function (err, doc) { //eventually find THE game
+    console.log("counter: ", doc.counter);
     if (doc.counter < ROUNDS) {
       var payload = configPayload(doc)
-      console.log('next round payload, check for image: ', payload)
+      console.log('next round payload object, check for image', payload)
       sendPayload(payload)
       console.log('next payload sent with unirest')
       res.redirect('/games')
