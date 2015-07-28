@@ -66,7 +66,7 @@ var putNewMessageInDatabase = function (channel) {
             doc.counter++
             console.log('counter after: ', doc.counter);
             console.log('doc to go into update');
-            games.update({}, doc, function (err, doc) {
+            games.insert(doc, function (err, doc) {
               console.log(doc)
             })
           })
