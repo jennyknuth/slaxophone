@@ -52,22 +52,24 @@ var putNewMessageInDatabase = function (channel) {
           console.log("picture url: ", messages[0].file.url)
           games.findOne({}, function (err, doc) { // eventually find THE game, ahem
             console.log('doc: ', doc);
-            var item = messages[0].file.url || messages.text
-            console.log('item: ', item);
+            console.log('counter before: ', doc.counter);
+            doc.counter += 1
+            console.log('counter after: ', doc.counter);
             console.log('doc.text before: ', doc.text);
-            doc.text.push(item)
+            if (doc.counter % 2 === 0) {
+              doc.text.push(messages[0].file.url)
+            } else {
+              doc.text.push(messages.text)
+            }
             console.log('doc.text after: ', doc.text);
             var person = messages[0].user
             console.log('person: ', person);
             console.log('doc.user_id before: ', doc.user_id);
             doc.user_id.push(person)
             console.log('doc.user_id after: ', doc.user_id);
-            console.log('counter before: ', doc.counter);
-            doc.counter++
-            console.log('counter after: ', doc.counter);
-            console.log('doc to go into update');
+            console.log('doc to go into update', doc);
             games.insert(doc, function (err, doc) {
-              console.log(doc)
+              console.log("updated game doc", doc)
             })
           })
         })
@@ -76,22 +78,23 @@ var putNewMessageInDatabase = function (channel) {
 // configuration for RTM API from slaxophone-bot: this works
 var configPayload = function (obj) {
   console.log('object coming in to config', obj);
-  var pObj = {}
-  pObj.id = 1 // hard coding for now, maybe make it equal to game _id later?
-  pObj.type = "message"
-  pObj.user_id = obj.user_id.pop()
+  var payload = {}
+  payload.id = 1 // hard coding for now, maybe make it equal to game _id later?
+  payload.type = "message"
+  payload.user_id = obj.user_id.pop()
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
-    pObj.text = obj.write + ' <"' + obj.text.pop() + '"> ' + '\n(Follow your message with another message containing the command /reply)'
+    console.log('making payload, counter = ', obj.counter);
+    payload.text = obj.write + ' <"' + obj.text.pop() + '"> ' + '\n(Follow your message with another message containing the command /reply)'
   } else {
-    pObj.text = obj.draw + obj.text.pop() + '\n(Follow your upload with another message containing the command /reply)'
+    payload.text = obj.draw + obj.text.pop() + '\n(Follow your upload with another message containing the command /reply)'
   }
-  pObj.username='slaxophone-bot'
-  pObj.as_user='true'
-  // pObj = JSON.stringify(pObj)
-  // console.log('stringified JSON?: ', pObj);
-  return pObj
+  payload.username='slaxophone-bot'
+  payload.as_user='true'
+  // payload = JSON.stringify(payload)
+  // console.log('stringified JSON?: ', payload);
+  return payload
 }
 
 // send via RTM API for chat.postMessage slaxophone-bot: this works
