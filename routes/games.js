@@ -83,9 +83,9 @@ var configPayload = function (obj) {
   // // obj.channel = '@knuth'//'@' + obj.user_name
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
-    pObj.text = obj.write + obj.text.pop() + '/n (Follow your message with another message containing the command /reply)'
+    pObj.text = obj.write + ' <"' + obj.text.pop() + '"> ' + '\n(Follow your message with another message containing the command /reply)'
   } else {
-    pObj.text = obj.draw + obj.text.pop() + '/n (Follow your upload with another message containing the command /reply)'
+    pObj.text = obj.draw + obj.text.pop() + '\n(Follow your upload with another message containing the command /reply)'
   }
   pObj.username='slaxophone-bot'
   pObj.as_user='true'
@@ -166,7 +166,7 @@ router.post('/update', function(req, res, next) {
   games.findOne({}, function (err, doc) { //eventually find THE game
     if (doc.counter < ROUNDS) {
       var payload = configurePayload(doc)
-      console.log('next round payload: ', payload)
+      console.log('next round payload, check for image: ', payload)
       sendPayload(payload)
       console.log('next payload sent with unirest')
       res.redirect('/games')
