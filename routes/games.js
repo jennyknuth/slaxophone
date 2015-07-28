@@ -46,7 +46,7 @@ var getNewMessage = function (channel) {
   console.log("inside getNewMessage");
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel)
         .end(function (response) {
-          console.log("new messages from API: ", response.body.message[0]);
+          console.log("new messages from API: ", response.body);
         })
 }
 
