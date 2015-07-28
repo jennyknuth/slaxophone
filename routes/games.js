@@ -162,7 +162,7 @@ router.get('/new', function (req, res, next) {
   res.render('games/new')
 })
 
-// this will be the route for all new rounds after game is established
+// this will be the route for all rounds after game is established
 router.post('/update', function(req, res, next) {
   console.log("req.body.channel_id ", req.body.channel_id);
   putNewMessageInDatabase(req.body.channel_id)
