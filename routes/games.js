@@ -86,8 +86,8 @@ var configPayload = function (obj) {
 
 // send via RTM API for chat.postMessage slaxophone-bot: this works
 var sendPayload = function (JSONobj) {
-  players.findOne({user_id: JSONobj.user_id}, function (err, doc) { // ultimately: find a user who has not played yet
-    console.log('player doc', doc);
+  players.findOne({id: JSONobj.user_id}, function (err, doc) { // ultimately: find a user who has not played yet
+    console.log('player doc:', doc);
     unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + doc.channel) //
     .header('Accept', 'application/json')
       .send(JSONobj)
