@@ -43,6 +43,7 @@ var Game = function (body) {
 }
 
 var getNewMessage = function (channel) {
+  console.log("inside getNewMessage");
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel)
         .end(function (response) {
           console.log("new messages from API: ", response.body.message[0]);
@@ -136,7 +137,7 @@ router.get('/new', function (req, res, next) {
 
 // this will be the route for all new rounds
 router.post('/update', function(req, res, next) {
-  console.log(req.body);
+  console.log("req.body.channel_id ", req.body.channel_id);
   getNewMessage(req.body.channel_id)
 
 
