@@ -68,9 +68,7 @@ var putNewMessageInDatabase = function (channel) {
             doc.user_id.push(person)
             console.log('doc.user_id after: ', doc.user_id);
             // console.log('doc to go into update', doc);
-            games.insert(doc, function (err, doc) {
-              console.log("updated game doc", doc)
-            })
+            games.insert(doc)
           })
         })
 }
