@@ -59,7 +59,7 @@ var putNewMessageInDatabase = function (channel) {
             if (doc.counter % 2 === 0) {
               doc.text.push(messages[0].file.url)
             } else {
-              doc.text.push(messages.text)
+              doc.text.push(messages[0].text)
             }
             console.log('doc.text after: ', doc.text);
             var person = messages[0].user
