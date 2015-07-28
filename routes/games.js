@@ -139,24 +139,6 @@ router.get('/new', function (req, res, next) {
 router.post('/update', function(req, res, next) {
   console.log("req.body.channel_id ", req.body.channel_id);
   getNewMessage(req.body.channel_id)
-
-
-  games.findOne({timestamp: req.body.timestamp}, function (err, doc) { // heroku version
-    if (err) throw err
-    if (doc.counter < ROUNDS){ // if # of ROUNDS or fewer
-      doc.text.push(req.body.text) // push message on to games.text
-      doc.user_name.push(req.body.user_name)
-      doc.counter += 1
-      games.update({_id: doc._id}, doc, function (err, entry) {
-        if (err) throw err
-        var payload = configPayload(doc)
-        console.log('payload', payload)
-        sendPayload(payload)
-        console.log('payload sent with unirest')
-        res.redirect('/games')
-      })
-    }
-  })
 })
 
 router.get('/:id', function (req, res, next) {
