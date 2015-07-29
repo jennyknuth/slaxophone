@@ -28,6 +28,9 @@ var getPlayers = function () {
   })
 }
 
+removePlayer()
+getPlayers()
+
 var Game = function (body) {
   // var timestamp = Math.floor(new Date() / 1000).toString()
   this.text = [body.text]
@@ -150,8 +153,6 @@ var putNewMessageInDatabase = function (channel) {
 
 
 router.get('/', function(req, res, next) {
-  removePlayer()
-  getPlayers()
   games.find({}, function(err, docs) {
     if (err) throw err
     // console.log('docs', docs);
