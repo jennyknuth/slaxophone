@@ -38,8 +38,8 @@ var Game = function (body) {
   this.text = [body.text]
   this.user_id = [body.user_id]
   this.counter = 1
-  this.draw = 'Please illustrate this sentence: '
-  this.write = 'Write a caption for this picture: '
+  // this.draw = 'Please illustrate this sentence: '
+  // this.write = 'Write a caption for this picture: '
 }
 
 var putNewMessageInDatabase = function (channel) {
@@ -84,9 +84,9 @@ var configPayload = function (obj) {
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
     console.log('making payload, counter = ', obj.counter);
-    payload.text = obj.write + ' <"' + obj.text.pop() + '"> ' + '\n(Follow your message with another message containing the command /reply)'
+    payload.text = 'Write a caption for this picture <' + obj.text.pop() + '> ' + '\n(Follow your message with another message containing the command /reply)'
   } else {
-    payload.text = obj.draw + obj.text.pop() + '\n(Follow your upload with another message containing the command /reply)'
+    payload.text = 'Please illustrate this sentence' + obj.text.pop() + '\n(Follow your upload with another message containing the command /reply)'
   }
   payload.username='slaxophone-bot'
   payload.as_user='true'
@@ -165,10 +165,10 @@ router.post('/update', function(req, res, next) {
   // console.log("req.body.channel_id ", req.body.channel_id);
   putNewMessageInDatabase(req.body.channel_id)
   games.findOne({}, function (err, doc) { //eventually find THE game
-    console.log("counter: ", doc.counter);
+    console.log("doc going in to payload:", doc);
     if (doc.counter < ROUNDS) {
       var payload = configPayload(doc)
-      console.log('next round payload object, check for image', payload)
+      console.log('next round payload object, check for image if counter even', payload)
       sendPayload(payload)
       console.log('next payload sent with unirest')
       res.redirect('/games')
