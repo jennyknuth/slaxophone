@@ -43,8 +43,6 @@ var Game = function (body) {
 }
 
 var putNewMessageInDatabase = function (channel) {
-  // put some conditionals here to make sure rounds are not complete and find file or text
-
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
         .end(function (response) {
           var messages = response.body.messages // an array of one
