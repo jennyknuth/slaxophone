@@ -19,7 +19,7 @@ var getPlayers = function () { // fix this so it includes all players, akyuna an
     ims.forEach( function (player) {
       players.find({id: player.user}, function (err, docs) {
         if (docs.length === 0) {
-          players.insert({id: player.user, channel: player.id, deleted: player.is_user_deleted})
+          players.insert({id: player.user, channel: player.id})
           players.remove({id: "USLACKBOT"}) // bot's not playing!
           players.remove({deleted: true})
         }
@@ -58,8 +58,15 @@ var configPayload = function (obj) {
 // send via RTM API for chat.postMessage slaxophone-bot: this works
 var sendPayload = function (JSONobj) {
   console.log('sending payload', JSONobj)
-  players.find({id: {$not: JSONobj.user_id}}, {limit: 1}, function (err, doc) { // ultimately: find a user who has not played yet
-    unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + doc.channel) //
+  players.find({}, function (err, docs) { // ultimately: find a user who has not played yet
+    var pool = docs
+    docs.forEach(function (doc, index) {
+      if (doc.id === JSONobj.user_id) {
+        pool.splice(index, 1)
+      }
+    })
+    var num = Math.floor(Math.random() * pool.length)
+    unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + pool[num].channel) //
     .header('Accept', 'application/json')
       .send(JSONobj)
       .end(function (response) {
