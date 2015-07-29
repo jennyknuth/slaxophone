@@ -151,18 +151,10 @@ router.post('/update', function(req, res, next) {
             })
           })
         })
-
-
-
 })
 
 router.get('/:id', function (req, res, next) {
   archives.findOne({_id: req.params.id}, function (err, doc) {
-    unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=C083AUXCL') // general channel
-    .header('Accept', 'application/json')
-      .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games/" + req.params.id + ">"})
-      .end(function (response) {
-      });
     res.render('games/show', doc)
   })
 })
