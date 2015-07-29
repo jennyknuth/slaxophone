@@ -100,7 +100,9 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   games.remove({}) // this ensures one game at a time, take out when games can be tracked with cookies
   var game = new Game(req.body)
+  console.log('starting a new game', req.body);
   games.insert(game, function (err, doc) {
+    console.log('insertgin game in database', game);
     var payload = configPayload(doc)
     sendPayload(payload)
     res.redirect('/games')
