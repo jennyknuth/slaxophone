@@ -45,9 +45,9 @@ var configPayload = function (obj) {
   var round = 'round' + obj.counter
   console.log('round in configPayload', round);
   if (obj.counter % 2 === 0) {
-    payload.text = 'Write a caption for this picture <' + obj[round] + '> ' + '\n(Follow your message with another message containing simply /reply)'
+    payload.text = 'Write a caption for this picture: <' + obj[round] + '> ' + '\n(Follow your message with another message containing simply /reply)'
   } else {
-    payload.text = 'Please illustrate this sentence ' + obj[round] + '\n(Follow your upload with another message containing simply /reply)'
+    payload.text = 'Please illustrate this sentence: ' + obj[round] + '\n(Follow your upload with another message containing simply /reply)'
   }
   payload.username='slaxophone-bot'
   payload.as_user='true'
@@ -138,7 +138,7 @@ router.post('/update', function(req, res, next) {
                   archives.insert(item)
                   unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=C083AUXCL') // general channel
                   .header('Accept', 'application/json')
-                    .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games>"})
+                    .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games/" + item._id + ">"})
                     .end(function (response) {
                     });
                   res.redirect('/{{_id}}')
