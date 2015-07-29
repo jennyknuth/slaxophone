@@ -41,36 +41,6 @@ var Game = function (body) {
   // this.draw = 'Please illustrate this sentence: '
   // this.write = 'Write a caption for this picture: '
 }
-
-var putNewMessageInDatabase = function (channel) {
-  unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
-        .end(function (response) {
-          var messages = response.body.messages // an array of one
-          // console.log("API text: ", messages[0].text)
-          // console.log("API picture url: ", messages[0].file.url)
-          games.findOne({}, function (err, doc) { // eventually find THE game, ahem
-            // console.log('doc: ', doc);
-            // console.log('counter before: ', doc.counter);
-            doc.counter += 1
-            // console.log('counter after: ', doc.counter);
-            // console.log('doc.text before: ', doc.text);
-            if (messages[0].file.url) {
-              doc.text.push(messages[0].file.url)
-            } else {
-              doc.text.push(messages[0].text)
-            }
-            // console.log('doc.text after: ', doc.text);
-            var person = messages[0].user
-            // console.log('person: ', person);
-            // console.log('doc.user_id before: ', doc.user_id);
-            doc.user_id.push(person)
-            // console.log('doc.user_id after: ', doc.user_id);
-            // console.log('doc to go into update', doc);
-            games.update({_id: doc._id}, doc)
-          })
-        })
-}
-
 // configuration for RTM API from slaxophone-bot: this works
 var configPayload = function (obj) {
   // console.log('object coming in to config', obj);
@@ -130,6 +100,49 @@ var sendPayload = function (JSONobj) {
 //   });
 // }
 
+var putNewMessageInDatabase = function (channel) {
+  unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
+        .end(function (response) {
+          var messages = response.body.messages // an array of one
+          // console.log("API text: ", messages[0].text)
+          // console.log("API picture url: ", messages[0].file.url)
+          games.findOne({}, function (err, doc) { // eventually find THE game, ahem
+            // console.log('doc: ', doc);
+            // console.log('counter before: ', doc.counter);
+            doc.counter += 1
+            // console.log('counter after: ', doc.counter);
+            // console.log('doc.text before: ', doc.text);
+            if (messages[0].file.url) {
+              doc.text.push(messages[0].file.url)
+            } else {
+              doc.text.push(messages[0].text)
+            }
+            // console.log('doc.text after: ', doc.text);
+            var person = messages[0].user
+            // console.log('person: ', person);
+            // console.log('doc.user_id before: ', doc.user_id);
+            doc.user_id.push(person)
+            // console.log('doc.user_id after: ', doc.user_id);
+            // console.log('doc to go into update', doc);
+            games.update({_id: doc._id}, doc, function () {
+              games.findOne({}, function (err, doc) { //eventually find THE game
+                console.log("next doc going in to payload:", doc);
+                if (doc.counter < ROUNDS) {
+                  var payload = configPayload(doc)
+                  console.log('next round payload object, check for image if counter even', payload)
+                  sendPayload(payload)
+                  console.log('next payload sent with unirest')
+                  res.redirect('/games')
+                } else {
+                  //format and send file to all users
+                }
+              })
+            })
+          })
+        })
+}
+
+
 router.get('/', function(req, res, next) {
   games.find({}, function(err, docs) {
     if (err) throw err
@@ -161,20 +174,7 @@ router.get('/new', function (req, res, next) {
 // this will be the route for all rounds after game is established, triggered with /reply
 router.post('/update', function(req, res, next) {
   // console.log("req.body.channel_id ", req.body.channel_id);
-  putNewMessageInDatabase(req.body.channel_id, function () {
-    games.findOne({}, function (err, doc) { //eventually find THE game
-      console.log("next doc going in to payload:", doc);
-      if (doc.counter < ROUNDS) {
-        var payload = configPayload(doc)
-        console.log('next round payload object, check for image if counter even', payload)
-        sendPayload(payload)
-        console.log('next payload sent with unirest')
-        res.redirect('/games')
-      } else {
-        //format and send file to all users
-      }
-    })
-  })
+  putNewMessageInDatabase(req.body.channel_id)
 })
 
 router.get('/:id', function (req, res, next) {
