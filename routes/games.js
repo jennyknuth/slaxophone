@@ -134,6 +134,7 @@ router.post('/update', function(req, res, next) {
                   var payload = configPayload(item)
                   sendPayload(payload)
                 } else {
+                  archive.insert(item)
                   res.redirect('/{{_id}}')
                   //  (formatAndSend(item) // need to do this!
                 }
@@ -147,7 +148,7 @@ router.post('/update', function(req, res, next) {
 })
 
 router.get('/:id', function (req, res, next) {
-  games.findOne({_id: req.params.id}, function (err, doc) {
+  archive.findOne({_id: req.params.id}, function (err, doc) {
     res.render('games/show', doc)
   })
 })
