@@ -95,7 +95,7 @@ var formatAndSend = function (obj) {
   payload.type = "message"
   payload.user_id = obj.user_id.pop()
   payload.username='slaxophone-bot'
-  payload.as_user='true'
+  payload.as_user= true
   return payload
 }
 
