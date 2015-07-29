@@ -1,8 +1,6 @@
 <h1>Games</h1>
-<h2>Show properties of games object</h2>
 {{#each docs}}
-  <h2>id: {{_id}}</h2>
-  <h2>id: <a href="/games/{{_id}}">{{round1}}</a></h2>
-  <h2>first sentence: {{round1}}</h2>
-  <h2>last sentence: {{round5}}</h2>
+  <h2>Title: <a href="/games/{{_id}}">{{round1}}</a></h2>
+  <h3>first sentence: {{round1}}</h3>
+  <h3>last sentence: {{round5}}</h3>
 {{/each}}
