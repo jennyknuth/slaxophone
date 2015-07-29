@@ -56,7 +56,7 @@ var putNewMessageInDatabase = function (channel) {
             doc.counter += 1
             console.log('counter after: ', doc.counter);
             console.log('doc.text before: ', doc.text);
-            if (messages[0].file) {
+            if (messages[0].file.url) {
               doc.text.push(messages[0].file.url)
             } else {
               doc.text.push(messages[0].text)
@@ -84,9 +84,9 @@ var configPayload = function (obj) {
   // obj.channel = 'U083ARY6L' // hardcoding my channel for now
   if (obj.counter % 2 === 0) {
     console.log('making payload, counter = ', obj.counter);
-    payload.text = 'Write a caption for this picture <' + obj.text.pop() + '> ' + '\n(Follow your message with another message containing the command /reply)'
+    payload.text = 'Write a caption for this picture <' + obj.text.pop() + '> ' + '\n(Follow your message with another message containing simply /reply)'
   } else {
-    payload.text = 'Please illustrate this sentence' + obj.text.pop() + '\n(Follow your upload with another message containing the command /reply)'
+    payload.text = 'Please illustrate this sentence ' + obj.text.pop() + '\n(Follow your upload with another message containing simply /reply)'
   }
   payload.username='slaxophone-bot'
   payload.as_user='true'
