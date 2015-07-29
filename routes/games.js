@@ -143,7 +143,8 @@ router.post('/update', function(req, res, next) {
                     .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games/" + item._id + ">"})
                     .end(function (response) {
                     });
-                  res.redirect('/{{_id}}')
+                  res.end()
+                  // res.redirect('/{{_id}}')
                   //  (formatAndSend(item) // need to do this!
                 }
               })
