@@ -18,9 +18,9 @@ var getPlayers = function () { // fix this so it includes all players, akyuna an
     ims.forEach( function (player) {
       players.find({id: player.user}, function (err, docs) {
         if (docs.length === 0) {
-          players.insert({id: player.user, channel: player.id, open: player.is_open})
+          players.insert({id: player.user, channel: player.id, deleted: player.is_user_deleted})
           players.remove({id: "USLACKBOT"}) // bot's not playing!
-          players.remove({open: false})
+          players.remove({deleted: true})
         }
       })
     })
