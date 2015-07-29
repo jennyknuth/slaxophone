@@ -105,7 +105,7 @@ var putNewMessageInDatabase = function (channel) {
           var messages = response.body.messages // an array of one
           games.findOne({}, function (err, doc) { // eventually find THE game, ahem
             doc.counter += 1
-            var round = 'round' + counter
+            var round = 'round' + doc.counter
             console.log('round;', round)
             if (messages[0].text[0] === '<') {
               doc.round = messages[0].file.url
