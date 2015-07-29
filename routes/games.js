@@ -102,7 +102,7 @@ router.post('/', function(req, res, next) {
   var game = new Game(req.body)
   console.log('starting a new game', req.body);
   games.insert(game, function (err, doc) {
-    console.log('insertgin game in database', game);
+    console.log('inserting game in database', game);
     var payload = configPayload(doc)
     sendPayload(payload)
     res.end('THANKS FOR STARTING A GAME!')
@@ -121,7 +121,6 @@ router.post('/update', function(req, res, next) {
           games.findOne({}, function (err, doc) { // eventually find THE game, ahem
             doc.counter += 1
             var round = 'round' + doc.counter
-            console.log('round;', round)
             if (messages[0].text[0] === '<') {
               doc[round] = messages[0].file.url
             } else {
@@ -137,13 +136,11 @@ router.post('/update', function(req, res, next) {
                   sendPayload(payload)
                 } else {
                   archives.insert(item)
-                  archives.findOne({round1: item.round1}, function (err, doc) {
-                    unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=C083AUXCL') // general channel
-                    .header('Accept', 'application/json')
-                      .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games>"})
-                      .end(function (response) {
-                      });
-                  })
+                  unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=C083AUXCL') // general channel
+                  .header('Accept', 'application/json')
+                    .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games>"})
+                    .end(function (response) {
+                    });
                   res.redirect('/{{_id}}')
                   //  (formatAndSend(item) // need to do this!
                 }
