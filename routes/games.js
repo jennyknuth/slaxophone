@@ -134,7 +134,7 @@ router.post('/update', function(req, res, next) {
                   var payload = configPayload(item)
                   sendPayload(payload)
                 } else {
-                  archive.insert(item)
+                  archives.insert(item)
                   res.redirect('/{{_id}}')
                   //  (formatAndSend(item) // need to do this!
                 }
