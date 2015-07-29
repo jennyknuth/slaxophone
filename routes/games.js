@@ -105,7 +105,7 @@ router.post('/', function(req, res, next) {
     console.log('insertgin game in database', game);
     var payload = configPayload(doc)
     sendPayload(payload)
-    res.redirect('/games')
+    res.end('THANKS FOR STARTING A GAME!')
   })
 })
 
@@ -140,7 +140,7 @@ router.post('/update', function(req, res, next) {
                   archives.findOne({round1: item.round1}, function (err, doc) {
                     unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=C083AUXCL') // general channel
                     .header('Accept', 'application/json')
-                      .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games/" + doc._id + ">"})
+                      .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games>"})
                       .end(function (response) {
                       });
                   })
