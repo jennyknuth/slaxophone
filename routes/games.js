@@ -161,18 +161,19 @@ router.get('/new', function (req, res, next) {
 // this will be the route for all rounds after game is established, triggered with /reply
 router.post('/update', function(req, res, next) {
   // console.log("req.body.channel_id ", req.body.channel_id);
-  putNewMessageInDatabase(req.body.channel_id)
-  games.findOne({}, function (err, doc) { //eventually find THE game
-    console.log("next doc going in to payload:", doc);
-    if (doc.counter < ROUNDS) {
-      var payload = configPayload(doc)
-      console.log('next round payload object, check for image if counter even', payload)
-      sendPayload(payload)
-      console.log('next payload sent with unirest')
-      res.redirect('/games')
-    } else {
-      //format and send file to all users
-    }
+  putNewMessageInDatabase(req.body.channel_id, function () {
+    games.findOne({}, function (err, doc) { //eventually find THE game
+      console.log("next doc going in to payload:", doc);
+      if (doc.counter < ROUNDS) {
+        var payload = configPayload(doc)
+        console.log('next round payload object, check for image if counter even', payload)
+        sendPayload(payload)
+        console.log('next payload sent with unirest')
+        res.redirect('/games')
+      } else {
+        //format and send file to all users
+      }
+    })
   })
 })
 
