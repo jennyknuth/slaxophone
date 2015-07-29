@@ -28,9 +28,6 @@ var getPlayers = function () {
   })
 }
 
-removePlayer()
-getPlayers()
-
 var Game = function (body) {
   // var timestamp = Math.floor(new Date() / 1000).toString()
   this.text = [body.text]
@@ -162,6 +159,8 @@ router.get('/', function(req, res, next) {
 
 // route for new games coming in from Slack with /slaxophone command
 router.post('/', function(req, res, next) {
+  removePlayer()
+  getPlayers()
   games.remove({}) // this ensures one game at a time, take out when games can be tracked with cookies
   // console.log('starting new game', req.body);
   var game = new Game(req.body)
