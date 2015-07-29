@@ -125,10 +125,10 @@ var putNewMessageInDatabase = function (channel) {
             // console.log('doc.user_id after: ', doc.user_id);
             // console.log('doc to go into update', doc);
             games.update({_id: doc._id}, doc, function () {
-              games.findOne({}, function (err, doc) { //eventually find THE game
-                console.log("next doc going in to payload:", doc);
-                if (doc.counter < ROUNDS) {
-                  var payload = configPayload(doc)
+              games.findOne({}, function (err, item) { //eventually find THE game
+                console.log("next doc going in to payload:", item);
+                if (item.counter < ROUNDS) {
+                  var payload = configPayload(item)
                   console.log('next round payload object, check for image if counter even', payload)
                   sendPayload(payload)
                   console.log('next payload sent with unirest')
