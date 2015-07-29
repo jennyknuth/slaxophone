@@ -108,12 +108,13 @@ var putNewMessageInDatabase = function (channel) {
             var round = 'round' + doc.counter
             console.log('round;', round)
             if (messages[0].text[0] === '<') {
-              doc.round = messages[0].file.url
+              doc[round] = messages[0].file.url
             } else {
-              doc.round = messages[0].text
+              doc[round] = messages[0].text
             }
             var person = messages[0].user
             doc.user_id.push(person)
+            console.log('doc with new round: ', doc);
             games.update({_id: doc._id}, doc, function () {
               games.findOne({}, function (err, item) { //eventually find THE game
                 if (item.counter < ROUNDS) {
