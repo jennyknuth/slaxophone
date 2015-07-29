@@ -112,7 +112,7 @@ var putNewMessageInDatabase = function (channel) {
             doc.counter += 1
             // console.log('counter after: ', doc.counter);
             // console.log('doc.text before: ', doc.text);
-            if (file in messages[0]) {
+            if (messages[0].text[0] === '<') {
               doc.text.push(messages[0].file.url)
             } else {
               doc.text.push(messages[0].text)
