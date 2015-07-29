@@ -1,6 +1,7 @@
 var db = require('monk')(process.env.MONGOLAB_URI);
 var games = db.get('games');
 var players = db.get('players');
+var archives = db.get('archives')
 var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
@@ -10,14 +11,16 @@ var ROUNDS = 5;
 // use to add current players to the players collection
 var getPlayers = function () { // fix this so it includes all players, akyuna and john not in list
   players.remove({})
-  unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&pretty=1Y')
+  // unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&pretty=1Y')
+  unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1Y')
   .end(function (response) {
     var ims = response.body.ims; // an array
     ims.forEach( function (player) {
       players.find({id: player.user}, function (err, docs) {
         if (docs.length === 0) {
-          players.insert({id: player.user, channel: player.id})
+          players.insert({id: player.user, channel: player.id, open: player.is_open})
           players.remove({id: "USLACKBOT"}) // bot's not playing!
+          players.remove({open: false})
         }
       })
     })
@@ -28,7 +31,7 @@ getPlayers()
 
 var Game = function (body) {
   // var timestamp = Math.floor(new Date() / 1000).toString()
-  this.text = [body.text]
+  this.round1 = body.text
   this.user_id = [body.user_id]
   this.counter = 1
 }
@@ -99,10 +102,12 @@ var putNewMessageInDatabase = function (channel) {
           var messages = response.body.messages // an array of one
           games.findOne({}, function (err, doc) { // eventually find THE game, ahem
             doc.counter += 1
+            var round = 'round' + counter
+            console.log('round;', round)
             if (messages[0].text[0] === '<') {
-              doc.text.push(messages[0].file.url)
+              doc.round = messages[0].file.url
             } else {
-              doc.text.push(messages[0].text)
+              doc.round = messages[0].text
             }
             var person = messages[0].user
             doc.user_id.push(person)
