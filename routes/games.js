@@ -132,7 +132,7 @@ var putNewMessageInDatabase = function (channel) {
                   console.log('next round payload object, check for image if counter even', payload)
                   sendPayload(payload)
                   console.log('next payload sent with unirest')
-                  res.redirect('/games')
+                  response.redirect('/games')
                 } else {
                   //format and send file to all users
                 }
