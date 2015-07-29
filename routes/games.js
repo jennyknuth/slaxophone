@@ -159,7 +159,7 @@ router.get('/', function(req, res, next) {
 
 // route for new games coming in from Slack with /slaxophone command
 router.post('/', function(req, res, next) {
-  removePlayers()
+  // removePlayers()
   getPlayers()
   games.remove({}) // this ensures one game at a time, take out when games can be tracked with cookies
   // console.log('starting new game', req.body);
