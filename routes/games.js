@@ -89,46 +89,6 @@ var sendPayload = function (JSONobj) {
 //   });
 // }
 
-var formatAndSend = function (obj) {
-  var payload = {}
-  payload.id = 1 // hard coding for now, maybe make it equal to game _id later?
-  payload.type = "message"
-  payload.user_id = obj.user_id.pop()
-  payload.username='slaxophone-bot'
-  payload.as_user= true
-  return payload
-}
-
-var putNewMessageInDatabase = function (channel) {
-  unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
-        .end(function (response) {
-          var messages = response.body.messages // an array of one
-          games.findOne({}, function (err, doc) { // eventually find THE game, ahem
-            doc.counter += 1
-            var round = 'round' + doc.counter
-            console.log('round;', round)
-            if (messages[0].text[0] === '<') {
-              doc[round] = messages[0].file.url
-            } else {
-              doc[round] = messages[0].text
-            }
-            var person = messages[0].user
-            doc.user_id.push(person)
-            console.log('doc with new round: ', doc);
-            games.update({_id: doc._id}, doc, function () {
-              games.findOne({}, function (err, item) { //eventually find THE game
-                if (item.counter < ROUNDS) {
-                  var payload = configPayload(item)
-                  sendPayload(payload)
-                } else {
-                  formatAndSend(item) // need to do this!
-                }
-              })
-            })
-          })
-        })
-}
-
 router.get('/', function(req, res, next) {
   games.find({}, function(err, docs) {
     if (err) throw err
@@ -153,7 +113,37 @@ router.get('/new', function (req, res, next) {
 
 // this will be the route for all rounds after game is established, triggered with /reply
 router.post('/update', function(req, res, next) {
-  putNewMessageInDatabase(req.body.channel_id)
+  unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + req.body.channel_id + '&count=1')
+        .end(function (response) {
+          var messages = response.body.messages // an array of one
+          games.findOne({}, function (err, doc) { // eventually find THE game, ahem
+            doc.counter += 1
+            var round = 'round' + doc.counter
+            console.log('round;', round)
+            if (messages[0].text[0] === '<') {
+              doc[round] = messages[0].file.url
+            } else {
+              doc[round] = messages[0].text
+            }
+            var person = messages[0].user
+            doc.user_id.push(person)
+            console.log('doc with new round: ', doc);
+            games.update({_id: doc._id}, doc, function () {
+              games.findOne({}, function (err, item) { //eventually find THE game
+                if (item.counter < ROUNDS) {
+                  var payload = configPayload(item)
+                  sendPayload(payload)
+                } else {
+                  res.redirect('/{{_id}}')
+                  //  (formatAndSend(item) // need to do this!
+                }
+              })
+            })
+          })
+        })
+
+
+
 })
 
 router.get('/:id', function (req, res, next) {
