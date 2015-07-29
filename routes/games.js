@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
 
-var ROUNDS = 9;
+var ROUNDS = 4;
 
 // use for a clean slate in the database at any given time
 var removePlayers = function () {
