@@ -90,7 +90,7 @@ var sendPayload = function (JSONobj) {
 // }
 
 router.get('/', function(req, res, next) {
-  games.find({}, function(err, docs) {
+  archives.find({}, function(err, docs) {
     if (err) throw err
     res.render('games/index', {docs: docs})
   })
