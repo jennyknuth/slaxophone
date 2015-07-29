@@ -28,19 +28,15 @@ var getPlayers = function () {
   })
 }
 
-// removePlayers()
-// console.log("players removed");
-// getPlayers()
-// console.log("players added");
-
 var Game = function (body) {
+  removePlayers()
+  getPlayers()
   // var timestamp = Math.floor(new Date() / 1000).toString()
   this.text = [body.text]
   this.user_id = [body.user_id]
   this.counter = 1
-  // this.draw = 'Please illustrate this sentence: '
-  // this.write = 'Write a caption for this picture: '
 }
+
 // configuration for RTM API from slaxophone-bot: this works
 var configPayload = function (obj) {
   // console.log('object coming in to config', obj);
@@ -100,6 +96,18 @@ var sendPayload = function (JSONobj) {
 //   });
 // }
 
+var formatAndSend = function (obj) {
+  var payload = {}
+  payload.id = 1 // hard coding for now, maybe make it equal to game _id later?
+  payload.type = "message"
+  payload.user_id = obj.user_id.pop()
+  payload.username='slaxophone-bot'
+  payload.as_user='true'
+  // payload = JSON.stringify(payload)
+  // console.log('stringified JSON?: ', payload);
+  return payload
+}
+
 var putNewMessageInDatabase = function (channel) {
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
         .end(function (response) {
@@ -134,7 +142,7 @@ var putNewMessageInDatabase = function (channel) {
                   console.log('next payload sent with unirest')
                   // response.redirect('/games')
                 } else {
-                  //format and send file to all users
+                  formatAndSend(item)
                 }
               })
             })
