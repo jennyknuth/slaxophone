@@ -27,7 +27,7 @@ var getPlayers = function () { // fix this so it includes all players, akyuna an
   })
 }
 
-getPlayers()
+// getPlayers()
 
 var Game = function (body) {
   // var timestamp = Math.floor(new Date() / 1000).toString()
@@ -62,6 +62,7 @@ var sendPayload = function (JSONobj) {
     .header('Accept', 'application/json')
       .send(JSONobj)
       .end(function (response) {
+        console.log('response body from unirest', response.body);
       });
   })
 }
@@ -105,7 +106,7 @@ router.post('/', function(req, res, next) {
     console.log('inserting game in database', game);
     var payload = configPayload(doc)
     sendPayload(payload)
-    res.end('THANKS FOR STARTING A GAME!')
+    res.end() //
   })
 })
 
@@ -134,6 +135,7 @@ router.post('/update', function(req, res, next) {
                 if (item.counter < ROUNDS) {
                   var payload = configPayload(item)
                   sendPayload(payload)
+                  res.end()
                 } else {
                   archives.insert(item)
                   unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=C083AUXCL') // general channel
