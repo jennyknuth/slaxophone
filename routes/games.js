@@ -15,6 +15,7 @@ var getPlayers = function () { // fix this so it includes all players, akyuna an
   // unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1Y')
   .end(function (response) {
     var ims = response.body.ims; // an array
+    var users= response.body.users;
     ims.forEach( function (player) {
       players.find({id: player.user}, function (err, docs) {
         if (docs.length === 0) {
@@ -57,7 +58,7 @@ var configPayload = function (obj) {
 // send via RTM API for chat.postMessage slaxophone-bot: this works
 var sendPayload = function (JSONobj) {
   console.log('sending payload', JSONobj)
-  players.findOne({id: {$not: JSONobj.user_id}}, function (err, doc) { // ultimately: find a user who has not played yet
+  players.findOne({id: JSONobj.user_id}, function (err, doc) { // ultimately: find a user who has not played yet
     unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + doc.channel) //
     .header('Accept', 'application/json')
       .send(JSONobj)
