@@ -135,6 +135,13 @@ router.post('/update', function(req, res, next) {
                   sendPayload(payload)
                 } else {
                   archives.insert(item)
+                  archives.findOne({round1: item.round1}, function (err, doc) {
+                    unirest.post('https://slack.com/api/chat.postMessage?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=C083AUXCL') // general channel
+                    .header('Accept', 'application/json')
+                      .send({text: "A new slaxophone game! Check it out: <https://slaxophone.herokuapp.com/games/" + doc._id + ">"})
+                      .end(function (response) {
+                      });
+                  })
                   res.redirect('/{{_id}}')
                   //  (formatAndSend(item) // need to do this!
                 }
