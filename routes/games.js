@@ -11,8 +11,8 @@ var ROUNDS = 5;
 // use to add current players to the players collection
 var getPlayers = function () { // fix this so it includes all players, akyuna and john not in list
   players.remove({})
-  // unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&pretty=1Y')
-  unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1Y')
+  unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&pretty=1Y')
+  // unirest.get('https://slack.com/api/rtm.start?token=' + process.env.SLACK_TOKEN + '&pretty=1Y')
   .end(function (response) {
     var ims = response.body.ims; // an array
     ims.forEach( function (player) {
