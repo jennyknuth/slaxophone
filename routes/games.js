@@ -47,7 +47,7 @@ var putNewMessageInDatabase = function (channel) {
 
   unirest.get('https://slack.com/api/im.history?token=' + process.env.SLAXOPHONE_BOT_TOKEN + '&channel=' + channel + '&count=1')
         .end(function (response) {
-          var messages = response.body.messages
+          var messages = response.body.messages // an array of one
           console.log("API text: ", messages[0].text)
           console.log("API picture url: ", messages[0].file.url)
           games.findOne({}, function (err, doc) { // eventually find THE game, ahem
@@ -56,7 +56,7 @@ var putNewMessageInDatabase = function (channel) {
             doc.counter += 1
             console.log('counter after: ', doc.counter);
             console.log('doc.text before: ', doc.text);
-            if (doc.counter % 2 === 0) {
+            if (messages[0].file) {
               doc.text.push(messages[0].file.url)
             } else {
               doc.text.push(messages[0].text)
