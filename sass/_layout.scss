@@ -29,7 +29,7 @@ header {
 }
 
 .game {
-  background-color: $transparent-yellow;
+  background-color: $background-color;
   padding: 3vw;
   margin-bottom: 1em;
   border: 2px solid black;
@@ -49,6 +49,7 @@ header {
 .show {
   height: 70vh;
   margin: 5vh 0;
+  border: 2px solid black;
 }
 
 .two {

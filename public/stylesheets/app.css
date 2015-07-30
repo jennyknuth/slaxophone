@@ -71,7 +71,7 @@ header {
   margin-right: 1em; }
 
 .game {
-  background-color: rgba(254, 206, 73, 0.7);
+  background-color: rgba(234, 255, 255, 0.3);
   padding: 3vw;
   margin-bottom: 1em;
   border: 2px solid black; }
@@ -87,7 +87,8 @@ header {
 
 .show {
   height: 70vh;
-  margin: 5vh 0; }
+  margin: 5vh 0;
+  border: 2px solid black; }
 
 .two {
   margin-left: 10vw; }
@@ -122,6 +123,9 @@ h1, h2, h4 {
   margin-bottom: 0.5em;
   font-weight: inherit;
   line-height: 1.2; }
+
+h1 {
+  font-size: 2.074em; }
 
 header h1 {
   top: 85px;
