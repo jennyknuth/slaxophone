@@ -61,7 +61,8 @@ section {
   position: relative; }
 
 .logo {
-  float: left; }
+  float: left;
+  width: 125px; }
 
 .game {
   background-color: rgba(155, 227, 187, 0.3);
