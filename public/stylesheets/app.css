@@ -56,7 +56,8 @@ body {
     margin-left: 5vw; }
   body .game {
     background-color: rgba(225, 225, 225, 0.8);
-    padding: 3vw; }
+    padding: 3vw;
+    margin-bottom: 1em; }
   body img.thumb {
     float: left;
     margin-right: 2em; }
