@@ -1,3 +1,7 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 body {
   width: 100vw;
 
@@ -11,29 +15,39 @@ body {
   }
 
   .game {
-    background-color: rgba(225, 225, 225, .8);
+    background-color: $transparent-color;
     padding: 3vw;
     margin-bottom: 1em;
   }
 
-  img.thumb {
-    float: left;
-    margin-right: 2em;
+  .thumb {
+    width: 125px;
+    height: 110px;
+    overflow: hidden;
+    img {
+      float: left;
+      margin-right: 2em;
+      width: 125px;
+    }
+  }
+
+  .show {
+    height: 75vw;
   }
 
   .two {
-    margin-left: 20%;
+    margin-left: 15vw;
   }
 
   .three {
-    margin-left: 40%;
+    margin-left: 30vw;
   }
 
   .four {
-    margin-left: 60%;
+    margin-left: 45vw;
   }
 
   .five {
-    margin-left: 80%;
+    margin-left: 60vw;
   }
 }

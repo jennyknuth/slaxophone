@@ -1,10 +1,12 @@
 <main>
-  <h1>Games</h1>
+  <h1>Slaxophone Games</h1>
   <section>
 
 {{#each docs}}
   <div class="game">
-    <img class="thumb" src="http://placehold.it/125x110" alt="" />
+    <div class="thumb">
+      <img src="{{round2}}" alt="" />
+    </div>
     <h2>From: <a href="/games/{{_id}}">{{round1}}</a></h2>
     <div class="summary">
       <h3>to: {{round5}}</h3>

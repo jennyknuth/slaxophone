@@ -46,6 +46,9 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+*, *:before, *:after {
+  box-sizing: border-box; }
+
 body {
   width: 100vw; }
   body main {
@@ -55,33 +58,40 @@ body {
   body .summary {
     margin-left: 5vw; }
   body .game {
-    background-color: rgba(225, 225, 225, 0.8);
+    background-color: rgba(64, 232, 222, 0.8);
     padding: 3vw;
     margin-bottom: 1em; }
-  body img.thumb {
-    float: left;
-    margin-right: 2em; }
+  body .thumb {
+    width: 125px;
+    height: 110px;
+    overflow: hidden; }
+    body .thumb img {
+      float: left;
+      margin-right: 2em;
+      width: 125px; }
+  body .show {
+    height: 75vw; }
   body .two {
-    margin-left: 20%; }
+    margin-left: 15vw; }
   body .three {
-    margin-left: 40%; }
+    margin-left: 30vw; }
   body .four {
-    margin-left: 60%; }
+    margin-left: 45vw; }
   body .five {
-    margin-left: 80%; }
+    margin-left: 60vw; }
 
 html {
   font-size: 1em; }
 
 body {
-  background-color: white;
+  background-color: #7FACE8;
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
-  color: #333; }
+  color: white; }
 
 a {
-  color: darkgray;
+  color: #98E5FF;
   text-decoration: none; }
 
 p {
@@ -93,6 +103,7 @@ h1, h2, h4 {
   line-height: 1.2; }
 
 h1 {
+  color: #FF7671;
   margin-top: 0;
   font-size: 2.074em; }
 
@@ -107,6 +118,3 @@ h4 {
 
 small, .font_small {
   font-size: 0.833em; }
-
-body {
-  background: lightgray; }
