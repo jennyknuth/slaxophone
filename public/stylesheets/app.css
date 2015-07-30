@@ -72,15 +72,15 @@ header {
 
 .game {
   padding: 3vw;
-  height: 200px;
   background-color: rgba(255, 226, 95, 0.5);
   margin-bottom: 1em;
   border: 2px solid black; }
 
 .thumb {
+  border: 2px solid black;
   float: left;
   width: 125px;
-  height: 110px;
+  height: 90px;
   overflow: hidden;
   margin-right: 2em; }
   .thumb img {
