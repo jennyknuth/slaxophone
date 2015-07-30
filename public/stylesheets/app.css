@@ -79,7 +79,7 @@ header {
 .thumb {
   float: left;
   width: 125px;
-  height: 90px;
+  height: 100px;
   overflow: hidden;
   margin-right: 2em; }
   .thumb img {
@@ -136,7 +136,8 @@ h2 {
   font-size: 1.728em; }
 
 h3 {
-  font-size: 1.44em; }
+  font-size: 1.44em;
+  line-height: 2; }
 
 h4 {
   font-size: 1.2em; }
