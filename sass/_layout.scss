@@ -16,13 +16,18 @@ section {
   position: relative;
 }
 
+header {
+  position: relative;
+}
+
 .logo{
   float: left;
   width: 125px;
+  bottom: 125px;
 }
 
 .game {
-  background-color: $background-color;
+  background-color: $lighter-color;
   padding: 3vw;
   margin-bottom: 1em;
 }

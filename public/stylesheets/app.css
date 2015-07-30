@@ -60,12 +60,16 @@ main {
 section {
   position: relative; }
 
+header {
+  position: relative; }
+
 .logo {
   float: left;
-  width: 125px; }
+  width: 125px;
+  bottom: 125px; }
 
 .game {
-  background-color: rgba(234, 255, 255, 0.7);
+  background-color: #98E5FF;
   padding: 3vw;
   margin-bottom: 1em; }
 
@@ -98,7 +102,7 @@ html {
   font-size: 1em; }
 
 body {
-  background-color: #98E5FF;
+  background-color: rgba(238, 255, 255, 0.7);
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
@@ -117,8 +121,9 @@ h1, h2, h4 {
   line-height: 1.2; }
 
 h1 {
-  color: white;
-  margin-top: 0;
+  position: relative;
+  color: #deb440;
+  top: 80px;
   font-size: 2.074em; }
 
 h2 {
