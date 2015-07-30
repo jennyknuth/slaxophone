@@ -21,13 +21,15 @@ header {
 }
 
 .logo{
+  position: relative;
   float: left;
   width: 125px;
-  bottom: 125px;
+  bottom: 85px;
+  margin-right: 1em;
 }
 
 .game {
-  background-color: $lighter-color;
+  background-color: $transparent-yellow;
   padding: 3vw;
   margin-bottom: 1em;
 }
