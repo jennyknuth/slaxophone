@@ -60,6 +60,9 @@ main {
 section {
   position: relative; }
 
+.logo {
+  float: left; }
+
 .game {
   background-color: rgba(155, 227, 187, 0.3);
   padding: 3vw;
