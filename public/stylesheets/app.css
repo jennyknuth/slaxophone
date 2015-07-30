@@ -61,7 +61,7 @@ section {
   position: relative; }
 
 .game {
-  background-color: rgba(222, 180, 64, 0.8);
+  background-color: rgba(222, 180, 64, 0.3);
   padding: 3vw;
   margin-bottom: 1em; }
 
@@ -69,9 +69,9 @@ section {
   float: left;
   width: 125px;
   height: 110px;
-  overflow: hidden; }
+  overflow: hidden;
+  margin-right: 2em; }
   .thumb img {
-    margin-right: 2em;
     width: 125px; }
 
 .show {
@@ -94,7 +94,7 @@ html {
   font-size: 1em; }
 
 body {
-  background-color: #b3e5ff;
+  background-color: #98E5FF;
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
