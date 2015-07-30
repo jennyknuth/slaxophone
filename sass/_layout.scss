@@ -6,10 +6,10 @@ body {
   width: 100vw;
 }
 
-  main {
-    padding: 5vw;
-    margin: 0 auto;
-    width: 85vw;
+main {
+  padding: 10vw 5vw;
+  margin: 0 auto;
+  width: 85vw;
 }
 
 section {
@@ -17,6 +17,7 @@ section {
 }
 
 header {
+  height: 125px;
   position: relative;
 }
 
@@ -24,12 +25,11 @@ header {
   position: relative;
   float: left;
   width: 125px;
-  bottom: 85px;
   margin-right: 1em;
 }
 
 .game {
-  background-color: $transparent-yellow;
+  background-color: $transparent-color;
   padding: 3vw;
   margin-bottom: 1em;
 }
