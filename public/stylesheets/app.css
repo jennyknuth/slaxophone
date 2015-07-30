@@ -73,7 +73,8 @@ header {
 .game {
   background-color: rgba(254, 206, 73, 0.7);
   padding: 3vw;
-  margin-bottom: 1em; }
+  margin-bottom: 1em;
+  border: 2px solid black; }
 
 .thumb {
   float: left;
@@ -104,11 +105,11 @@ html {
   font-size: 1em; }
 
 body {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(254, 206, 73, 0.7);
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
-  color: white; }
+  color: black; }
 
 a {
   color: #FF7671;
@@ -125,7 +126,6 @@ h1, h2, h4 {
 header h1 {
   top: 85px;
   position: relative;
-  color: #deb440;
   font-size: 2.074em; }
 
 h2 {

@@ -3,11 +3,11 @@
 html {font-size: 1em;}
 
 body {
-  background-color: $background-color;
+  background-color: $transparent-yellow;
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
-  color: white;
+  color: black;
 }
 
 a {
@@ -27,7 +27,6 @@ header{
   h1 {
     top: 85px;
     position: relative;
-    color: $yellow;
     font-size: 2.074em;
   }
 }
