@@ -58,7 +58,7 @@ body {
   body .summary {
     margin-left: 5vw; }
   body .game {
-    background-color: rgba(64, 232, 222, 0.8);
+    background-color: rgba(64, 232, 222, 0.3);
     padding: 3vw;
     margin-bottom: 1em; }
   body .thumb {
@@ -70,7 +70,8 @@ body {
       margin-right: 2em;
       width: 125px; }
   body .show {
-    height: 65vh; }
+    height: 65vh;
+    margin: 5vh 0; }
   body .two {
     margin-left: 10vw; }
   body .three {
@@ -84,14 +85,14 @@ html {
   font-size: 1em; }
 
 body {
-  background-color: #7FACE8;
+  background-color: #BCDEFF;
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
   color: white; }
 
 a {
-  color: #FF7671;
+  color: #C0C8FF;
   text-decoration: none; }
 
 p {
