@@ -28,7 +28,7 @@ var getPlayers = function () { // fix this so it includes all players, akyuna an
   })
 }
 
-// getPlayers()
+getPlayers()
 
 var Game = function (body) {
   // var timestamp = Math.floor(new Date() / 1000).toString()
