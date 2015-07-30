@@ -8,44 +8,47 @@ body {
   main {
     padding: 5vw;
     margin: 0 auto;
-    width: 80vw;
-  }
+    width: 85vw;
+}
 
-  .game {
-    background-color: $transparent-color;
-    padding: 3vw;
-    margin-bottom: 1em;
-  }
+section {
+  position: relative;
+}
 
-  .thumb {
+.game {
+  background-color: $transparent-color;
+  padding: 3vw;
+  margin-bottom: 1em;
+}
+
+.thumb {
+  float: left;
+  width: 125px;
+  height: 110px;
+  overflow: hidden;
+  img {
+    margin-right: 2em;
     width: 125px;
-    height: 110px;
-    overflow: hidden;
-    img {
-      float: left;
-      margin-right: 2em;
-      width: 125px;
-    }
   }
+}
 
-  .show {
-    height: 65vh;
-    margin: 5vh 0;
-  }
+.show {
+  height: 70vh;
+  margin: 5vh 0;
+}
 
-  .two {
-    margin-left: 10vw;
-  }
+.two {
+  margin-left: 10vw;
+}
 
-  .three {
-    margin-left: 20vw;
-  }
+.three {
+  margin-left: 20vw;
+}
 
-  .four {
-    margin-left: 30vw;
-  }
+.four {
+  margin-left: 30vw;
+}
 
-  .five {
-    margin-left: 40vw;
-  }
+.five {
+  margin-left: 40vw;
 }
