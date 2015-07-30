@@ -51,39 +51,50 @@ table {
 
 body {
   width: 100vw; }
-  body main {
-    padding: 5vw;
-    margin: 0 auto;
-    width: 80vw; }
-  body .game {
-    background-color: rgba(222, 180, 64, 0.3);
-    padding: 3vw;
-    margin-bottom: 1em; }
-  body .thumb {
-    width: 125px;
-    height: 110px;
-    overflow: hidden; }
-    body .thumb img {
-      float: left;
-      margin-right: 2em;
-      width: 125px; }
-  body .show {
-    height: 65vh;
-    margin: 5vh 0; }
-  body .two {
-    margin-left: 10vw; }
-  body .three {
-    margin-left: 20vw; }
-  body .four {
-    margin-left: 30vw; }
-  body .five {
-    margin-left: 40vw; }
+
+main {
+  padding: 5vw;
+  margin: 0 auto;
+  width: 85vw; }
+
+section {
+  position: relative; }
+
+.game {
+  background-color: rgba(222, 180, 64, 0.8);
+  padding: 3vw;
+  margin-bottom: 1em; }
+
+.thumb {
+  float: left;
+  width: 125px;
+  height: 110px;
+  overflow: hidden; }
+  .thumb img {
+    margin-right: 2em;
+    width: 125px; }
+
+.show {
+  height: 70vh;
+  margin: 5vh 0; }
+
+.two {
+  margin-left: 10vw; }
+
+.three {
+  margin-left: 20vw; }
+
+.four {
+  margin-left: 30vw; }
+
+.five {
+  margin-left: 40vw; }
 
 html {
   font-size: 1em; }
 
 body {
-  background-color: #9dc9e0;
+  background-color: #b3e5ff;
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
