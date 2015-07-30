@@ -58,8 +58,10 @@ var configPayload = function (obj) {
 // send via RTM API for chat.postMessage slaxophone-bot: this works
 var sendPayload = function (JSONobj) {
   console.log('sending payload', JSONobj)
+  var pool = []
   players.find({}, function (err, docs) { // ultimately: find a user who has not played yet
-    var pool = docs
+    pool = docs
+    console.log('available pool:', pool)
     docs.forEach(function (doc, index) {
       if (doc.id === JSONobj.user_id) {
         pool.splice(index, 1)
