@@ -1,0 +1,38 @@
+body {
+  width: 100vw;
+
+  main {
+    padding: 5vw;
+    margin: 0 auto;
+    width: 80vw;
+  }
+  .summary {
+    margin-left: 5vw;
+  }
+
+  .game {
+    background-color: rgba(225, 225, 225, .8);
+    padding: 3vw;
+  }
+
+  img.thumb {
+    float: left;
+    margin-right: 2em;
+  }
+
+  .two {
+    margin-left: 20%;
+  }
+
+  .three {
+    margin-left: 40%;
+  }
+
+  .four {
+    margin-left: 60%;
+  }
+
+  .five {
+    margin-left: 80%;
+  }
+}

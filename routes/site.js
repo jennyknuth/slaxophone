@@ -8,5 +8,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Slaxophone' });
 });
 
+router.get('/styleguide', function(req, res, next) {
+  res.render('styleguide')
+})
 
 module.exports = router;

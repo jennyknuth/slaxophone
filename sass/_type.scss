@@ -1,0 +1,43 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:400,300,700,100,900);
+
+html {font-size: 1em;}
+
+body {
+  background-color: white;
+  font-family: Lato, sans-serif;
+  font-weight: 300;
+  line-height: 1.45;
+  color: #333;
+}
+
+a {
+  color: darkgray;
+  text-decoration: none;
+}
+
+p {margin-bottom: 1.3em;}
+
+h1, h2, h4 {
+  margin-bottom: 0.5em;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 2.074em;
+}
+
+h2 {
+  font-size: 1.728em;
+
+
+}
+
+h3 {
+  font-size: 1.44em;
+}
+
+h4 {font-size: 1.2em;}
+
+small, .font_small {font-size: 0.833em;}

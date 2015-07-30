@@ -1,17 +1,19 @@
-<p>
-  This is meant to mimic what the 'next' user sees in the game
-</p>
+<main>
+  <p>
+    This is meant to mimic what the 'next' user sees in the game
+  </p>
 
-<form action="/games/update" method="post">
-  <input type="hidden" name="timestamp" value="{{timestamp}}">
-  <input type="hidden" name="counter" value="{{counter}}">
-  <label for="message">{{draw}} "{{text}}"</label>
-  <input type="text" name="text" id="message">
-  <label for="user">received from {{user_name}}, going to…</label>
-  <input type="text" name="user_name" id="user">
-  <input type="submit" value="Send">
-</form>
+  <form action="/games/update" method="post">
+    <input type="hidden" name="timestamp" value="{{timestamp}}">
+    <input type="hidden" name="counter" value="{{counter}}">
+    <label for="message">{{draw}} "{{text}}"</label>
+    <input type="text" name="text" id="message">
+    <label for="user">received from {{user_name}}, going to…</label>
+    <input type="text" name="user_name" id="user">
+    <input type="submit" value="Send">
+  </form>
 
-<p>
-  counter: {{counter}}
-</p>
+  <p>
+    counter: {{counter}}
+  </p>
+</main>
