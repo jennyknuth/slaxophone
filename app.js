@@ -11,6 +11,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/site');
 var games = require('./routes/games');
 
+var app = express();
+
 // var Slack = require('slack-client');
 // var token = 'process.env.SLAXOPHONE_BOT_TOKEN';
 //
@@ -59,10 +61,8 @@ var games = require('./routes/games');
 //   user = slackbot.getDMByName(message.user)
 //   response = ''
 // });
-
+//
 // slackbot.login();
-
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

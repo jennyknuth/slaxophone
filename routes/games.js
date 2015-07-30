@@ -162,7 +162,6 @@ router.post('/update', function(req, res, next) {
           })
         })
 })
-
 router.get('/:id', function (req, res, next) {
   archives.findOne({_id: req.params.id}, function (err, doc) {
     res.render('games/show', doc)
