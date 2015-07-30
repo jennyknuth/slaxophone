@@ -64,12 +64,14 @@ header {
   position: relative; }
 
 .logo {
+  position: relative;
   float: left;
   width: 125px;
-  bottom: 125px; }
+  bottom: 85px;
+  margin-right: 1em; }
 
 .game {
-  background-color: #98E5FF;
+  background-color: rgba(222, 180, 64, 0.3);
   padding: 3vw;
   margin-bottom: 1em; }
 
@@ -123,7 +125,6 @@ h1, h2, h4 {
 h1 {
   position: relative;
   color: #deb440;
-  top: 80px;
   font-size: 2.074em; }
 
 h2 {
