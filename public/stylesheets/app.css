@@ -71,8 +71,9 @@ header {
   margin-right: 1em; }
 
 .game {
-  background-color: rgba(255, 226, 95, 0.5);
   padding: 3vw;
+  height: 200px;
+  background-color: rgba(255, 226, 95, 0.5);
   margin-bottom: 1em;
   border: 2px solid black; }
 
@@ -106,7 +107,7 @@ html {
   font-size: 1em; }
 
 body {
-  background-color: white;
+  background-color: #dbf9ff;
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
