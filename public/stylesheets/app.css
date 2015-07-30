@@ -70,15 +70,15 @@ body {
       margin-right: 2em;
       width: 125px; }
   body .show {
-    height: 75vw; }
+    height: 65vh; }
   body .two {
-    margin-left: 15vw; }
+    margin-left: 10vw; }
   body .three {
-    margin-left: 30vw; }
+    margin-left: 20vw; }
   body .four {
-    margin-left: 45vw; }
+    margin-left: 30vw; }
   body .five {
-    margin-left: 60vw; }
+    margin-left: 40vw; }
 
 html {
   font-size: 1em; }
@@ -91,7 +91,7 @@ body {
   color: white; }
 
 a {
-  color: #98E5FF;
+  color: #FF7671;
   text-decoration: none; }
 
 p {
@@ -103,7 +103,7 @@ h1, h2, h4 {
   line-height: 1.2; }
 
 h1 {
-  color: #FF7671;
+  color: white;
   margin-top: 0;
   font-size: 2.074em; }
 

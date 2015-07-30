@@ -11,7 +11,7 @@ body {
 }
 
 a {
-  color: $lighter-color;
+  color: $contrast;
   text-decoration: none;
 }
 
@@ -24,15 +24,13 @@ h1, h2, h4 {
 }
 
 h1 {
-  color: $contrast;
+  color: white;
   margin-top: 0;
   font-size: 2.074em;
 }
 
 h2 {
   font-size: 1.728em;
-
-
 }
 
 h3 {
