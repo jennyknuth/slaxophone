@@ -99,7 +99,7 @@ var sendPayload = function (JSONobj) {
 // }
 
 router.get('/', function(req, res, next) {
-  archives.find({}, function(err, docs) {
+  archives.find({}, {sort: {_id: -1}}, function(err, docs) {
     if (err) throw err
     res.render('games/index', {docs: docs})
   })
