@@ -2,6 +2,7 @@
   <h1>Games</h1>
   <section>
 
+{{#each docs}}
   <div class="game">
     <img class="thumb" src="http://placehold.it/125x110" alt="" />
     <h2>Title: <a href="/games/{{_id}}">{{round1}}</a></h2>
@@ -12,10 +13,6 @@
   </div>
 
   </section>
-  <!-- {{#each docs}}
--->
+{{/each}}
 
-
-  <!-- {{/each}}
--->
 </main>
