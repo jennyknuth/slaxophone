@@ -55,10 +55,8 @@ body {
     padding: 5vw;
     margin: 0 auto;
     width: 80vw; }
-  body .summary {
-    margin-left: 5vw; }
   body .game {
-    background-color: rgba(64, 232, 222, 0.3);
+    background-color: rgba(222, 180, 64, 0.3);
     padding: 3vw;
     margin-bottom: 1em; }
   body .thumb {
@@ -92,7 +90,7 @@ body {
   color: white; }
 
 a {
-  color: #C0C8FF;
+  color: #FF7671;
   text-decoration: none; }
 
 p {
