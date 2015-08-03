@@ -72,7 +72,7 @@ header {
 
 .game {
   padding: 3vw;
-  background-color: rgba(255, 226, 95, 0.5);
+  background-color: rgba(255, 255, 255, 0.7);
   margin-bottom: 1em;
   border: 2px solid black; }
 
@@ -106,7 +106,7 @@ html {
   font-size: 1em; }
 
 body {
-  background-color: #dbf9ff;
+  background-color: #81B1AA;
   font-family: Lato, sans-serif;
   font-weight: 300;
   line-height: 1.45;
@@ -144,3 +144,6 @@ h4 {
 
 small, .font_small {
   font-size: 0.833em; }
+
+strong {
+  color: #CC944E; }
