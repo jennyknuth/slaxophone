@@ -10,4 +10,4 @@ And so on as the sentence morphs from "An alien landed on the moon" to "I'm fat 
 See an archive of games here:
 https://slaxophone.herokuapp.com/games
 
-![](/MDimages/siteScreenShot.png)
+![](/MDimages/siteScreenshot.png)
