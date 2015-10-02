@@ -3,13 +3,13 @@ Play pictionary-telephone on Slack! My personal project for my Galvanize Full-St
 
 Start a game from Slack with a slash command (/slaxophone) followed by a sentence. The next user receives a DM from slaxophone-bot that includes a prompt to illustrate the original sentence. That user responds to slaxophone-bot's prompt by uploading an image.
 
-![](/MDimages/dogScreenShot.jpg)
+<img src="/MDimages/dogScreenShot.jpg" height=400 width=400)>
 
 And so on as the sentence morphs from "An alien landed on the moon" to "I'm fat Santa" with pictionary-like drawings in between.
 
 At the end of the game, results are rendered to a webpage with a link to an archive of previous games.
 
-<img src="/MDimages/siteScreenshot.png" height=300 width=300)>
+<img src="/MDimages/siteScreenshot.png" height=400 width=400)>
 
 A fun team building and creative problem solving activity.
 
